@@ -24,7 +24,6 @@
  */
 class Kimai_Translation_Service
 {
-
     /**
      * Returns an array of all language codes.
      *
@@ -33,8 +32,8 @@ class Kimai_Translation_Service
     public static function getAvailableLanguages()
     {
         $languages = [];
-        foreach (glob(WEBROOT . '/language/*.php') as $langFile) {
-            $languages[] = str_replace(".php", "", basename($langFile));
+        foreach (glob(WEBROOT . 'language/*.php') as $langFile) {
+            $languages[] = str_replace('.php', '', basename($langFile));
         }
         sort($languages);
 
@@ -45,7 +44,9 @@ class Kimai_Translation_Service
      * Load a translation data.
      *
      * @param $name
+     *
      * @return Kimai_Translation_Data
+     * @throws \Exception
      */
     public function load($name)
     {

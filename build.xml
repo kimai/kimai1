@@ -1,7 +1,7 @@
 <project name="Kimai" default="help">
 
 	<!-- values depending on the Kimai version and your development environment -->
-	<property name="release.version" value="1.3.1"/>
+	<property name="release.version" value="1.3.5"/>
 	<property name="release.directory" location="/tmp/kimai/"/>
 
 	<!-- default target just dumps a copyright notice -->
@@ -44,13 +44,19 @@
 					<exclude name="build.xml"/>
 					<exclude name="README.md"/>
 					<exclude name=".idea/"/>
-					<exclude name="tests/"/>
 					<exclude name="includes/autoconf.php"/>
 					<exclude name="libraries/phpclasses/ultimatemysql/example*"/>
 					<exclude name="libraries/phpoffice/phpexcel/Examples/**"/>
 					<exclude name="libraries/phpoffice/phpexcel/unitTests/**"/>
 					<exclude name="libraries/symfony/yaml/Tests/**"/>
 					<exclude name="libraries/tecnickcom/tcpdf/examples/**"/>
+					<exclude name="temporary/"/>
+					<exclude name="tests/"/>
+				</patternset>
+			</fileset>
+			<fileset dir=".">
+				<patternset id="always.include.files">
+					<include name="temporary/.htaccess"/>
 				</patternset>
 			</fileset>
 		</copy>

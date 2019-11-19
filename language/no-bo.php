@@ -80,7 +80,6 @@ return [
     "trackingNumber" => "Sporingsnummer",
     "cookiewarning" => "Slå på informasjons kapsler i nettleseren før du fortsetter.",
     "JSwarning" => "JavaScript må være aktivert i nettleseren.",
-    "designation" => "betegnelse",
     "banned" => "Utestengt (Kontoen er låst)",
     "tooManyLogins" => "For mange mislykkede påloggingsforsøk - kontoen er utestengt.",
     "accessDenied" => "Sperret tilgang!",

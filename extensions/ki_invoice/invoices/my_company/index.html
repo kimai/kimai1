@@ -48,8 +48,8 @@ $invoiceDate    = $this->invoiceDate;
 			<h1>Rechnung</h1>
 			<address>
 				<p>
-					Firmen Name <br>
-					Beispielstraße 1 <br>
+					Firmen Name<br>
+					Beispielstraße 1<br>
 					12345 Eine Stadt
 				</p>
 				<p>(0123) 456-78901</p>
@@ -60,11 +60,11 @@ $invoiceDate    = $this->invoiceDate;
 			<h1>Empfänger</h1>
 			<address>
 				<p>
-					<?php echo $customer['company']; ?><br>
-					<?php echo $customer['contact']; ?><br>
-					<?php echo $customer['street']; ?><br>
-					<?php echo $customer['zipcode']; ?>
-					<?php echo $customer['city']; ?>
+					<?php echo htmlspecialchars($customer['company']); ?><br>
+					<?php echo htmlspecialchars($customer['contact']); ?><br>
+					<?php echo htmlspecialchars($customer['street']); ?><br>
+					<?php echo htmlspecialchars($customer['zipcode']); ?>
+					<?php echo htmlspecialchars($customer['city']); ?>
 				</p>
 			</address>
 			<table class="meta">
@@ -78,7 +78,7 @@ $invoiceDate    = $this->invoiceDate;
 				</tr>
 				<tr>
 					<th><span>Rechnungsnummer</span></th>
-					<td><span><?php echo $invoiceId;?></span></td>
+					<td><span><?php echo htmlspecialchars($invoiceId);?></span></td>
 				</tr>
 			</table>
 			<table class="inventory">
@@ -96,19 +96,19 @@ $invoiceDate    = $this->invoiceDate;
 				if ($row['type'] == 'timeSheet') {
 				?>
 					<tr>
-						<td><span><?php echo $row['desc']; ?></span></td>
-						<td><span><?php echo $row['trackingNr']; ?></span></td>
-						<td><span><?php echo $currency; ?></span> <span><?php echo number_format($row['rate'],2 ); ?></span></td>
+						<td><span><?php echo htmlspecialchars($row['desc']); ?></span></td>
+						<td><span><?php echo htmlspecialchars($row['trackingNr']); ?></span></td>
+						<td><span><?php echo htmlspecialchars($currency); ?></span> <span><?php echo number_format($row['rate'],2 ); ?></span></td>
 						<td><span><?php echo number_format($row['hour'], 2); ?></span></td>
-						<td><span><?php echo $currency; ?></span> <span><?php echo $row['amount']; ?></span></td>
+						<td><span><?php echo htmlspecialchars($currency); ?></span> <span><?php echo htmlspecialchars($row['amount']); ?></span></td>
 					</tr>
 				<?php } else { ?>
 					<tr>
-						<td><span><?php echo $row['desc']; ?></span></td>
-						<td><span><?php echo $row['trackingNr']; ?></span></td>
-						<td><span><?php echo $currency; ?></span> <span><?php echo number_format($row['value'],2 ); ?></span></td>
+						<td><span><?php echo htmlspecialchars($row['desc']); ?></span></td>
+						<td><span><?php echo htmlspecialchars($row['trackingNr']); ?></span></td>
+						<td><span><?php echo htmlspecialchars($currency); ?></span> <span><?php echo number_format($row['value'],2 ); ?></span></td>
 						<td><span><?php echo number_format($row['multiplier'], 2); ?></span></td>
-						<td><span><?php echo $currency; ?></span> <span><?php echo $row['amount']; ?></span></td>
+						<td><span><?php echo htmlspecialchars($currency); ?></span> <span><?php echo htmlspecialchars($row['amount']); ?></span></td>
 					</tr>
 				<?php }
 				} ?>

@@ -393,4 +393,4 @@ foreach ($orderedExportData as $customer) {
 }
 
 $pdf->Output('invoice_' . date('Y-m-d_H-i-s', $pdf->print_time) . '.pdf',
-    ((isset($_REQUEST['download_pdf'])) ? 'D' : 'I')); // D=Download I=Eingebunden
+    (isset($_REQUEST['download_pdf']) ? 'D' : 'I')); // D=Download I=Eingebunden

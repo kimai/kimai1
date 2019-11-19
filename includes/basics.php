@@ -40,19 +40,19 @@ set_include_path(
     )
 );
 
-if (!file_exists(WEBROOT . '/includes/autoconf.php')) {
+if (!file_exists(WEBROOT . 'includes/autoconf.php')) {
     header('Location: installer/index.php');
     exit;
 }
 
 ini_set('display_errors', '0');
 
-require_once WEBROOT . '/libraries/autoload.php';
-require_once WEBROOT . '/includes/func.php';
+require_once WEBROOT . 'libraries/autoload.php';
+require_once WEBROOT . 'includes/func.php';
 
 // The $kga (formerly Kimai Global Array) is initialized here
 // It was replaced by an proxy object, but until refactored it is still used as array in a lot of places
-require_once WEBROOT . '/includes/autoconf.php';
+require_once WEBROOT . 'includes/autoconf.php';
 $kga = new Kimai_Config([
     'server_prefix' => $server_prefix,
     'server_hostname' => $server_hostname,
@@ -60,12 +60,20 @@ $kga = new Kimai_Config([
     'server_username' => $server_username,
     'server_password' => $server_password,
     'server_charset' => $server_charset,
+    'mail_transport' => $mail_transport,
+    'smtp_name' => $smtp_name,
+    'smtp_host' => $smtp_host,
+    'smtp_port' => $smtp_port,
+    'smtp_auth' => $smtp_auth,
+    'smtp_user' => $smtp_user,
+    'smtp_pass' => $smtp_pass,
+    'smtp_ssl' => $smtp_ssl,
     'defaultTimezone' => $defaultTimezone,
     'password_salt' => isset($password_salt) ? $password_salt : ''
 ]);
 
 // will inject the version variables into the Kimai_Config object
-require WEBROOT . '/includes/version.php';
+require WEBROOT . 'includes/version.php';
 
 // write vars from autoconf.php into kga
 if (isset($language)) {
@@ -141,7 +149,7 @@ Kimai_Registry::setTranslation(
 );
 unset($service);
 
-$tmpDir = WEBROOT . '/temporary/';
+$tmpDir = WEBROOT . 'temporary/';
 if (!file_exists($tmpDir) || !is_dir($tmpDir) || !is_writable($tmpDir)) {
     die('Kimai needs write permissions for: temporary/');
 }

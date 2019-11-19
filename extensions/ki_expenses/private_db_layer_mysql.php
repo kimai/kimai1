@@ -20,30 +20,27 @@
 /**
  * delete expense entry
  *
- * @param integer $id -> ID of record
+ * @param int $id ID of record
  * @return object
  */
 function expense_delete($id)
 {
-    $kga = Kimai_Registry::getConfig();
     $database = Kimai_Registry::getDatabase();
     $conn = $database->getConnectionHandler();
     $filter['expenseID'] = MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER);
-    $table = $kga['server_prefix'] . 'expenses';
-    $query = MySQL::BuildSQLDelete($table, $filter);
+    $query = MySQL::BuildSQLDelete($database->getExpenseTable(), $filter);
     return $conn->Query($query);
 }
 
 /**
  * create exp entry
  *
- * @param $userID
+ * @param int $userID
  * @param array $data array with record data
  * @return bool|int
  */
-function expense_create($userID, $data)
+function expense_create($userID, array $data)
 {
-    $kga = Kimai_Registry::getConfig();
     $database = Kimai_Registry::getDatabase();
     $conn = $database->getConnectionHandler();
 
@@ -53,14 +50,14 @@ function expense_create($userID, $data)
     $values['designation'] = MySQL::SQLValue($data['designation']);
     $values['comment'] = MySQL::SQLValue($data['comment']);
     $values['commentType'] = MySQL::SQLValue($data['commentType'], MySQL::SQLVALUE_NUMBER);
+    $values['cleared'] = MySQL::SQLValue($data['cleared'] ? 1 : 0, MySQL::SQLVALUE_NUMBER);
     $values['timestamp'] = MySQL::SQLValue($data['timestamp'], MySQL::SQLVALUE_NUMBER);
     $values['multiplier'] = MySQL::SQLValue($data['multiplier'], MySQL::SQLVALUE_NUMBER);
     $values['value'] = MySQL::SQLValue($data['value'], MySQL::SQLVALUE_NUMBER);
     $values['userID'] = MySQL::SQLValue($userID, MySQL::SQLVALUE_NUMBER);
     $values['refundable'] = MySQL::SQLValue($data['refundable'], MySQL::SQLVALUE_NUMBER);
 
-    $table = $kga['server_prefix'] . "expenses";
-    $result = $conn->InsertRow($table, $values);
+    $result = $conn->InsertRow($database->getExpenseTable(), $values);
 
     if (!$result) {
         Kimai_Logger::logfile('expense_create: ' . $conn->Error());
@@ -194,50 +191,25 @@ function get_expenses(
 }
 
 /**
- * returns single expense entry as array
+ * Returns the data of a certain expense record
  *
- * @param integer $id ID of entry in table exp
- * @global array $kga kimai-global-array
- * @return array
- * @author sl
+ * @param int $id expenseID of the record
+ * @return array               the record's data as array, false on failure
  */
-function get_expense($id)
+function expense_get(int $id)
 {
     $kga = Kimai_Registry::getConfig();
     $database = Kimai_Registry::getDatabase();
     $conn = $database->getConnectionHandler();
 
     $id = MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER);
-    $p = $kga['server_prefix'];
 
-    $query = 'SELECT * FROM ' . $p . 'expenses WHERE expenseID = ' . $id . ' LIMIT 1;';
-
-    $conn->Query($query);
-    return $conn->RowArray(0, MYSQLI_ASSOC);
-}
-
-/**
- * Returns the data of a certain expense record
- *
- * @param integer $expenseID expenseID of the record
- * @global array $kga kimai-global-array
- * @return array               the record's data as array, false on failure
- * @author ob
- */
-function expense_get($expenseID)
-{
-    $kga = Kimai_Registry::getConfig();
-    $database = Kimai_Registry::getDatabase();
-    $conn = $database->getConnectionHandler();
-
-    $p = $kga['server_prefix'];
-
-    $expenseID = MySQL::SQLValue($expenseID, MySQL::SQLVALUE_NUMBER);
-
-    if ($expenseID) {
-        $result = $conn->Query('SELECT * FROM ' . $p . 'expenses WHERE expenseID = ' . $expenseID);
+    if ($id) {
+        $filter['expenseID'] = MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER);
+        $result = $conn->SelectRows($database->getExpenseTable(), $filter);
     } else {
-        $result = $conn->Query('SELECT * FROM ' . $p . 'expenses WHERE userID = ' . $kga['user']['userID'] . ' ORDER BY expenseID DESC LIMIT 1');
+        $filter['userID'] = MySQL::SQLValue($kga['user']['userID'], MySQL::SQLVALUE_NUMBER);
+        $result = $conn->SelectRows($database->getExpenseTable(), $filter, null, 'expenseID', false, 1);
     }
 
     if (!$result) {
@@ -250,13 +222,12 @@ function expense_get($expenseID)
 /**
  * edit exp entry
  *
- * @param integer $id ID of record
+ * @param int $id ID of record
  * @param array $data array with new record data
  * @return bool
  */
-function expense_edit($id, $data)
+function expense_edit($id, array $data)
 {
-    $kga = Kimai_Registry::getConfig();
     $database = Kimai_Registry::getDatabase();
     $conn = $database->getConnectionHandler();
     $data = $database->clean_data($data);
@@ -272,18 +243,18 @@ function expense_edit($id, $data)
         }
     }
 
-    $values ['projectID'] = MySQL::SQLValue($new_array ['projectID'], MySQL::SQLVALUE_NUMBER);
-    $values ['designation'] = MySQL::SQLValue($new_array ['designation']);
-    $values ['comment'] = MySQL::SQLValue($new_array ['comment']);
-    $values ['commentType'] = MySQL::SQLValue($new_array ['commentType'], MySQL::SQLVALUE_NUMBER);
-    $values ['timestamp'] = MySQL::SQLValue($new_array ['timestamp'], MySQL::SQLVALUE_NUMBER);
-    $values ['multiplier'] = MySQL::SQLValue($new_array ['multiplier'], MySQL::SQLVALUE_NUMBER);
-    $values ['value'] = MySQL::SQLValue($new_array ['value'], MySQL::SQLVALUE_NUMBER);
-    $values ['refundable'] = MySQL::SQLValue($new_array ['refundable'], MySQL::SQLVALUE_NUMBER);
+    $values['projectID'] = MySQL::SQLValue($new_array['projectID'], MySQL::SQLVALUE_NUMBER);
+    $values['designation'] = MySQL::SQLValue($new_array['designation']);
+    $values['comment'] = MySQL::SQLValue($new_array['comment']);
+    $values['commentType'] = MySQL::SQLValue($new_array['commentType'], MySQL::SQLVALUE_NUMBER);
+    $values['cleared'] = MySQL::SQLValue($new_array['cleared'] ? 1 : 0, MySQL::SQLVALUE_NUMBER);
+    $values['timestamp'] = MySQL::SQLValue($new_array['timestamp'], MySQL::SQLVALUE_NUMBER);
+    $values['multiplier'] = MySQL::SQLValue($new_array['multiplier'], MySQL::SQLVALUE_NUMBER);
+    $values['value'] = MySQL::SQLValue($new_array['value'], MySQL::SQLVALUE_NUMBER);
+    $values['refundable'] = MySQL::SQLValue($new_array['refundable'], MySQL::SQLVALUE_NUMBER);
 
-    $filter ['expenseID'] = MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER);
-    $table = $kga['server_prefix'] . "expenses";
-    $query = MySQL::BuildSQLUpdate($table, $values, $filter);
+    $filter['expenseID'] = MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER);
+    $query = MySQL::BuildSQLUpdate($database->getExpenseTable(), $values, $filter);
 
     $success = true;
 

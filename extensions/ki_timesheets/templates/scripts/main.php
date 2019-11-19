@@ -11,10 +11,10 @@
             <col class="from"/>
             <col class="to"/>
             <col class="time"/>
-            <?php if ($this->showBillability) { ?>
+            <?php if ($this->showBillability): ?>
                 <col class="billability" />
                 <col class="billableTime" />
-            <?php } ?>
+            <?php endif; ?>
             <?php if ($this->showRates): ?>
                 <col class="wage"/>
             <?php endif; ?>
@@ -22,24 +22,24 @@
             <col class="project"/>
             <col class="activity"/>
             <col class="description"/>
-            <?php if ($this->showTrackingNumber) { ?>
+            <?php if ($this->showTrackingNumber): ?>
                 <col class="trackingnumber"/>
-            <?php } ?>
+            <?php endif; ?>
             <col class="username"/>
         </colgroup>
         <tbody>
         <tr>
             <td class="option">&nbsp;</td>
-            <td class="date"><?php echo $this->translate('datum') ?></td>
-            <td class="from"><?php echo $this->translate('in') ?></td>
-            <td class="to"><?php echo $this->translate('out') ?></td>
-            <td class="time"><?php echo $this->translate('time') ?></td>
-            <?php if ($this->showBillability) { ?>
-                <td class="billable"><?php echo $this->translate('billable')?></td>
-                <td class="time_billable"><?php echo $this->translate('time_billable')?></td>
-            <?php } ?>
+            <td class="date"><?php echo $this->translate('datum'); ?></td>
+            <td class="from"><?php echo $this->translate('in'); ?></td>
+            <td class="to"><?php echo $this->translate('out'); ?></td>
+            <td class="time"><?php echo $this->translate('time'); ?></td>
+            <?php if ($this->showBillability): ?>
+                <td class="billable"><?php echo $this->translate('billable'); ?></td>
+                <td class="time_billable"><?php echo $this->translate('time_billable'); ?></td>
+            <?php endif; ?>
             <?php if ($this->showRates): ?>
-                <td class="wage"><?php echo $this->translate('wage') ?></td>
+                <td class="wage"><?php echo $this->translate('wage'); ?></td>
             <?php endif; ?>
             <td class="customer"><?php echo $this->escape($this->translate('customer')); ?></td>
             <td class="project"><?php echo $this->escape($this->translate('project')); ?></td>
@@ -53,7 +53,7 @@
         </tbody>
     </table>
 </div>
-<div id="timeSheet"><?php echo $this->timeSheet_display ?> </div>
+<div id="timeSheet"><?php echo $this->timeSheet_display; ?></div>
 <script type="text/javascript">
     $(document).ready(function () {
         ts_ext_onload();

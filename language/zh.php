@@ -34,7 +34,6 @@
  *     随着使用的熟练，将会把蹩脚的字面翻译，转换成含有中国文学色彩的解释。
  */
 
-
 /**
  * chinese
  * 中文
@@ -45,7 +44,6 @@
  * Mail: blueswxs@gmail.com
  *
  */
-
 
 return [
     "countryCode" => "zh-ZH",
@@ -98,7 +96,6 @@ return [
     "trackingNumber" => "追踪编号",
     "cookiewarning" => "浏览器需要打开Cookies.",
     "JSwarning" => "浏览器需要打开JavaScript.",
-    "designation" => "描述",
     "banned" => "拒绝 (账户已锁定)",
     "tooManyLogins" => "登录失败次数到达限制，账户锁定.",
     "accessDenied" => "拒绝访问!",
@@ -332,7 +329,6 @@ return [
     'StartTimeBeforeEndTime' => '开始时间一定要在结束时间之前.',
 
     'credits' => <<<'EOD'
-        If you do any alternations we would appreciate a posting on the <a href="%1$s">forum</a>.
         The latest developer version can be downloaded for test purposes <a href="%2$s">here</a>.
         <br /><br />
         Please support further development of Kimai with a <a href="%3$s">donation</a> or
@@ -343,7 +339,6 @@ EOD
     'credits_license' => 'This program is free software and published \'AS IS\' without any kind of warranty under the terms of the %1$s.',
     'credits_thanks' => 'Further thanks for support to:',
     'credits_libs' => 'Our thanks also go to the projects:',
-
 
     'months' => ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
     'months_short' => ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],

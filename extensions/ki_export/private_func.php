@@ -42,10 +42,10 @@ $all_column_headers = [
 // Determine if the expenses extension is used.
 $expense_ext_available = false;
 if (file_exists('../ki_expenses/private_db_layer_mysql.php')) {
-    include('../ki_expenses/private_db_layer_mysql.php');
+    include '../ki_expenses/private_db_layer_mysql.php';
     $expense_ext_available = true;
 }
-include('private_db_layer_mysql.php');
+include 'private_db_layer_mysql.php';
 
 /**
  * Get a combined array with time recordings and expenses to export.
@@ -61,21 +61,55 @@ include('private_db_layer_mysql.php');
  * @param string $default_location use this string if no location is set for the entry
  * @param int $filter_cleared (-1: show all, 0:only cleared 1: only not cleared) entries
  * @param int $filter_type (-1 show time and expenses, 0: only show time entries, 1: only show expenses)
- * @param int $limitCommentSize should comments be cut off, when they are too long
+ * @param bool $limitCommentSize should comments be cut off, when they are too long
+ * @param int $filter_refundable
  * @return array with time recordings and expenses chronologically sorted
  */
-function export_get_data($start, $end, $users = null, $customers = null, $projects = null, $activities = null, $limit = false, $reverse_order = false, $default_location = '', $filter_cleared = -1, $filter_type = -1, $limitCommentSize = true, $filter_refundable = -1)
-{
+function export_get_data(
+    $start,
+    $end,
+    $users = null,
+    $customers = null,
+    $projects = null,
+    $activities = null,
+    $limit = false,
+    $reverse_order = false,
+    $default_location = '',
+    $filter_cleared = -1,
+    $filter_type = -1,
+    $limitCommentSize = true,
+    $filter_refundable = -1
+) {
     global $expense_ext_available;
     $database = Kimai_Registry::getDatabase();
     $timeSheetEntries = [];
     $expenses = [];
     if ($filter_type != 1) {
-        $timeSheetEntries = $database->get_timeSheet($start, $end, $users, $customers, $projects, $activities, $limit, $reverse_order, $filter_cleared);
+        $timeSheetEntries = $database->get_timeSheet(
+            $start,
+            $end,
+            $users,
+            $customers,
+            $projects,
+            $activities,
+            $limit,
+            $reverse_order,
+            $filter_cleared
+        );
     }
 
     if ($filter_type != 0 && $expense_ext_available) {
-        $expenses = get_expenses($start, $end, $users, $customers, $projects, $limit, $reverse_order, $filter_refundable, $filter_cleared);
+        $expenses = get_expenses(
+            $start,
+            $end,
+            $users,
+            $customers,
+            $projects,
+            $limit,
+            $reverse_order,
+            $filter_refundable,
+            $filter_cleared
+        );
     }
     $result_arr = [];
     $timeSheetEntries_index = 0;
@@ -111,14 +145,18 @@ function export_get_data($start, $end, $users = null, $customers = null, $projec
         'username',
         'cleared'
     ];
-    while ($timeSheetEntries_index < count($timeSheetEntries) && $expenses_index < count($expenses)) {
+    $timeSheetEntriesCount = count($timeSheetEntries);
+    $expensesCount = count($expenses);
+    while ($timeSheetEntries_index < $timeSheetEntriesCount && $expenses_index < $expensesCount) {
         $arr = [];
         foreach ($keys as $key) {
             $arr[$key] = null;
         }
         $arr['location'] = $default_location;
 
-        if ((! $reverse_order && ($timeSheetEntries[$timeSheetEntries_index]['start'] > $expenses[$expenses_index]['timestamp'])) || ($reverse_order && ($timeSheetEntries[$timeSheetEntries_index]['start'] < $expenses[$expenses_index]['timestamp']))) {
+        if ((!$reverse_order && ($timeSheetEntries[$timeSheetEntries_index]['start'] > $expenses[$expenses_index]['timestamp']))
+            || ($reverse_order && ($timeSheetEntries[$timeSheetEntries_index]['start'] < $expenses[$expenses_index]['timestamp']))
+        ) {
             if ($timeSheetEntries[$timeSheetEntries_index]['end'] != 0) {
                 // active recordings will be omitted
                 $arr['type'] = 'timeSheet';
@@ -127,7 +165,7 @@ function export_get_data($start, $end, $users = null, $customers = null, $projec
                 $arr['time_out'] = $timeSheetEntries[$timeSheetEntries_index]['end'];
                 $arr['duration'] = $timeSheetEntries[$timeSheetEntries_index]['duration'];
                 $arr['formattedDuration'] = $timeSheetEntries[$timeSheetEntries_index]['formattedDuration'];
-                $arr['decimalDuration'] = sprintf("%01.2f", $timeSheetEntries[$timeSheetEntries_index]['duration'] / 3600);
+                $arr['decimalDuration'] = sprintf('%01.2f', $timeSheetEntries[$timeSheetEntries_index]['duration'] / 3600);
                 $arr['rate'] = $timeSheetEntries[$timeSheetEntries_index]['rate'];
                 $arr['wage'] = $timeSheetEntries[$timeSheetEntries_index]['wage'];
                 $arr['wage_decimal'] = $timeSheetEntries[$timeSheetEntries_index]['wage_decimal'];
@@ -162,7 +200,7 @@ function export_get_data($start, $end, $users = null, $customers = null, $projec
             $arr['id'] = $expenses[$expenses_index]['expenseID'];
             $arr['time_in'] = $expenses[$expenses_index]['timestamp'];
             $arr['time_out'] = $expenses[$expenses_index]['timestamp'];
-            $arr['wage'] = sprintf("%01.2f", $expenses[$expenses_index]['value'] * $expenses[$expenses_index]['multiplier']);
+            $arr['wage'] = sprintf('%01.2f', $expenses[$expenses_index]['value'] * $expenses[$expenses_index]['multiplier']);
             $arr['customerID'] = $expenses[$expenses_index]['customerID'];
             $arr['customerName'] = $expenses[$expenses_index]['customerName'];
             $arr['projectID'] = $expenses[$expenses_index]['projectID'];
@@ -198,7 +236,7 @@ function export_get_data($start, $end, $users = null, $customers = null, $projec
             $arr['time_out'] = $timeSheetEntries[$timeSheetEntries_index]['end'];
             $arr['duration'] = $timeSheetEntries[$timeSheetEntries_index]['duration'];
             $arr['formattedDuration'] = $timeSheetEntries[$timeSheetEntries_index]['formattedDuration'];
-            $arr['decimalDuration'] = sprintf("%01.2f", $timeSheetEntries[$timeSheetEntries_index]['duration'] / 3600);
+            $arr['decimalDuration'] = sprintf('%01.2f', $timeSheetEntries[$timeSheetEntries_index]['duration'] / 3600);
             $arr['rate'] = $timeSheetEntries[$timeSheetEntries_index]['rate'];
             $arr['wage'] = $timeSheetEntries[$timeSheetEntries_index]['wage'];
             $arr['wage_decimal'] = $timeSheetEntries[$timeSheetEntries_index]['wage_decimal'];
@@ -240,7 +278,7 @@ function export_get_data($start, $end, $users = null, $customers = null, $projec
         $arr['id'] = $expenses[$expenses_index]['expenseID'];
         $arr['time_in'] = $expenses[$expenses_index]['timestamp'];
         $arr['time_out'] = $expenses[$expenses_index]['timestamp'];
-        $arr['wage'] = sprintf("%01.2f", $expenses[$expenses_index]['value'] * $expenses[$expenses_index]['multiplier']);
+        $arr['wage'] = sprintf('%01.2f', $expenses[$expenses_index]['value'] * $expenses[$expenses_index]['multiplier']);
         $arr['customerID'] = $expenses[$expenses_index]['customerID'];
         $arr['customerName'] = $expenses[$expenses_index]['customerName'];
         $arr['projectID'] = $expenses[$expenses_index]['projectID'];
@@ -387,7 +425,5 @@ function csv_prepare_field($field, $column_delimiter, $quote_char)
         return $field;
     }
     $field = str_replace($quote_char, $quote_char . $quote_char, $field);
-    $field = $quote_char . $field . $quote_char;
-
-    return $field;
+    return $quote_char . $field . $quote_char;
 }

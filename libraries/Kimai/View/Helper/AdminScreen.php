@@ -22,7 +22,6 @@
  */
 class Kimai_View_Helper_AdminScreen extends Zend_View_Helper_Abstract
 {
-
     /**
      * @return $this
      */

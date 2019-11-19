@@ -162,9 +162,9 @@ class Kimai_Remote_Api
         $result = $this->getBackend()->startRecorder($projectId, $activityId, $uid);
         if ($result) {
             return $this->getSuccessResult([['timeEntryID' => $result]]);
-        } else {
-            return $this->getErrorResult("Unable to start, invalid params?");
         }
+
+        return $this->getErrorResult('Unable to start, invalid params?');
     }
 
     /**
@@ -189,7 +189,7 @@ class Kimai_Remote_Api
             $result = $this->getBackend()->get_current_recordings($uid);
 
             // no "last" activity existing
-            if (count($result) == 0) {
+            if (count($result) === 0) {
                 return $this->getErrorResult('No active recording.');
             }
 
@@ -204,9 +204,9 @@ class Kimai_Remote_Api
         $result = $this->getBackend()->stopRecorder($entryId);
         if ($result) {
             return $this->getSuccessResult([]);
-        } else {
-            return $this->getErrorResult("Unable to stop, not recording?");
         }
+
+        return $this->getErrorResult('Unable to stop, not recording?');
     }
 
     /**
@@ -386,7 +386,7 @@ class Kimai_Remote_Api
         $result = $this->getBackend()->get_current_recordings($uid);
 
         // no "last" activity existing
-        if (count($result) == 0) {
+        if (count($result) === 0) {
             return $this->getErrorResult('No active recording.');
         }
 
@@ -449,7 +449,7 @@ class Kimai_Remote_Api
         $result = $this->getBackend()->get_current_recordings($user['userID']);
 
         // no "last" activity existing
-        if (count($result) == 0) {
+        if (count($result) === 0) {
             return $this->getErrorResult('No active recording.');
         }
 
@@ -474,16 +474,16 @@ class Kimai_Remote_Api
             // make sure the timestamp is not negative
             if ($in <= 0 || $out <= 0 || $out - $in <= 0) {
                 return $this->getErrorResult('Invalid from/to, make sure there is at least a second difference.');
-            } else {
-                $data['end'] = $out;
             }
+
+            $data['end'] = $out;
         }
         $result = $this->getBackend()->timeEntry_edit($result[0], $data);
         if ($result) {
             return $this->getSuccessResult([]);
-        } else {
-            return $this->getErrorResult('Failed to update record.');
         }
+
+        return $this->getErrorResult('Failed to update record.');
     }
 
     /**
@@ -514,11 +514,12 @@ class Kimai_Remote_Api
             $timeSheetEntries = $backend->get_timeSheet($in, $out, null, [$kga['customer']['customerID']], false, $cleared, $start, $limit);
             $totalCount = $backend->get_timeSheet($in, $out, null, [$kga['customer']['customerID']], false, $cleared, $start, $limit, true);
             return $this->getSuccessResult($timeSheetEntries, $totalCount);
-        } else {
-            $timeSheetEntries = $backend->get_timeSheet($in, $out, [$user['userID']], null, null, null, true, false, $cleared, $start, $limit);
-            $totalCount = $backend->get_timeSheet($in, $out, [$user['userID']], null, null, null, true, false, $cleared, $start, $limit, true);
-            return $this->getSuccessResult($timeSheetEntries, $totalCount);
         }
+
+        $timeSheetEntries = $backend->get_timeSheet($in, $out, [$user['userID']], null, null, null, true, false, $cleared, $start, $limit);
+        $totalCount = $backend->get_timeSheet($in, $out, [$user['userID']], null, null, null, true, false, $cleared, $start, $limit, true);
+
+        return $this->getSuccessResult($timeSheetEntries, $totalCount);
     }
 
     /**
@@ -643,17 +644,17 @@ class Kimai_Remote_Api
             if (!empty($id)) {
                 $backend->timeEntry_edit($id, $data);
                 return $this->getSuccessResult([]);
-            } else {
-                return $this->getErrorResult('Performed an update, but missing id property.');
             }
-        } else {
-            $id = $backend->timeEntry_create($data);
-            if (!empty($id)) {
-                return $this->getSuccessResult([['id' => $id]]);
-            } else {
-                return $this->getErrorResult('Failed to add entry.');
-            }
+
+            return $this->getErrorResult('Performed an update, but missing id property.');
         }
+
+        $id = $backend->timeEntry_create($data);
+        if (!empty($id)) {
+            return $this->getSuccessResult([['id' => $id]]);
+        }
+
+        return $this->getErrorResult('Failed to add entry.');
     }
 
     /**
@@ -780,7 +781,7 @@ class Kimai_Remote_Api
 
         // prepare data array - required values
         $data['userID'] = $user['userID'];
-        $data['projectID'] = (int) $record['projectId'];
+        $data['projectID'] = $record['projectId'];
         $data['timestamp'] = $timestamp;
 
         // optional values
@@ -811,17 +812,17 @@ class Kimai_Remote_Api
             if (!empty($id)) {
                 $backend->expense_edit($id, $data);
                 return $this->getSuccessResult([]);
-            } else {
-                return $this->getErrorResult('Performed an update, but missing id property.');
             }
-        } else {
-            $id = $backend->expense_create($data);
-            if (!empty($id)) {
-                return $this->getSuccessResult([['id' => $id]]);
-            } else {
-                return $this->getErrorResult('Failed to add entry.');
-            }
+
+            return $this->getErrorResult('Performed an update, but missing id property.');
         }
+
+        $id = $backend->expense_create($data);
+        if (!empty($id)) {
+            return $this->getSuccessResult([['id' => $id]]);
+        }
+
+        return $this->getErrorResult('Failed to add entry.');
     }
 
     /**

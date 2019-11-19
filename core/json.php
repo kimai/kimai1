@@ -28,14 +28,14 @@
  */
 
 // Bootstrap Kimai
-require(dirname(__FILE__) . '/../includes/basics.php');
+require __DIR__ . '/../includes/basics.php';
 
 header('Access-Control-Allow-Origin: *');
 
 $server = new Zend_Json_Server();
 $server->setClass('Kimai_Remote_Api');
 
-if ('GET' == $_SERVER['REQUEST_METHOD']) {
+if ('GET' === $_SERVER['REQUEST_METHOD']) {
     // Indicate the URL endpoint and the JSON-RPC version used
 
     /* @var Zend_Json_Server_Smd $server */

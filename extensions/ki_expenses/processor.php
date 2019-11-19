@@ -168,7 +168,7 @@ switch ($axAction) {
 
         expenseAccessAllowed($data, 'delete', $errors);
 
-        if (count($errors) == 0) {
+        if (count($errors) === 0) {
             expense_delete($id);
         }
 
@@ -264,6 +264,7 @@ switch ($axAction) {
         $data['designation'] = $_REQUEST['designation'];
         $data['comment'] = (isset($_REQUEST['comment']) && !empty($_REQUEST['comment'])) ? $_REQUEST['comment'] : '';
         $data['commentType'] = $_REQUEST['commentType'];
+        $data['cleared'] = isset($_REQUEST['cleared']);
         $data['refundable'] = getRequestBool('refundable');
         $data['multiplier'] = getRequestDecimal($_REQUEST['multiplier']);
         $data['value'] = getRequestDecimal($_REQUEST['edit_value']);
@@ -299,10 +300,8 @@ switch ($axAction) {
             if (expense_edit($id, $data) === false) {
                 $errors[''] = $kga['lang']['error'];
             }
-        } else {
-            if (expense_create($kga['user']['userID'], $data) === false) {
-                $errors[''] = $kga['lang']['error'];
-            }
+        } elseif (expense_create($kga['user']['userID'], $data) === false) {
+            $errors[''] = $kga['lang']['error'];
         }
 
         echo json_encode(['errors' => $errors]);

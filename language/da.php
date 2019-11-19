@@ -69,7 +69,6 @@ return [
     "trackingNumber" => "Trackingnummer",
     "cookiewarning" => "Aktiver Cookies, inden du fortsætter.",
     "JSwarning" => "Javascript er påkrævet.",
-    "designation" => "designation",
     "banned" => "Blokeret (Konto låst)",
     "tooManyLogins" => "For mange fejlagtige loginforsøg - bruger suspenderet.",
     "accessDenied" => "Adgang nægtet!",
@@ -271,7 +270,6 @@ return [
     'change' => 'skift',
 
     'credits' => <<<'EOD'
-        Hvis du foretager ændringer, ville vi værdsætte en postering på <a href="%1$s">forum</a>.
         Nyeste version kan downloades <a href="%2$s">her</a> (download kun med test for øje!).
         <br /><br />
         Støt gerne den videre udvikling af Kimai med en <a href="%3$s">donation</a> eller ved at bidrage til de

@@ -22,7 +22,7 @@ if (!file_exists(WEBROOT . 'libraries/autoload.php')) {
     die('Please run <code>composer install --no-dev</code> on the command line to install all php dependencies.');
 }
 
-$installsteps = 8;
+$installsteps = 9;
 $kga = [];
 require('../includes/version.php');
 $browser_lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
@@ -31,7 +31,7 @@ $browser_lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link type="text/css" rel="stylesheet" href="styles.css">
-    <script type="text/javascript" src="../libraries/jQuery/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="../libraries/jQuery/jquery-1.12.4.min.js"></script>
     <script type="text/javascript" src="installscript.js"></script>
     <title>Kimai Installation</title>
     <script type="text/javascript">
@@ -47,6 +47,14 @@ $browser_lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
         var username = '';
         var password = '';
         var timezone = '';
+        var mail_transport = '';
+        var smtp_host = '';
+        var smtp_port = '';
+        var smtp_user = '';
+        var smtp_pass = '';
+        var smtp_name = '';
+        var smtp_auth = '';
+        var smtp_ssl = '';
     </script>
 </head>
 <body>

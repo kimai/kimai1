@@ -284,7 +284,6 @@ return [
     'table_date_format' => 'Formát dátumu pre tabuľky (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">notácia pre PHP funkciu strftime()</a>)',
     'round_time' => 'Zaokrúhľovať čas na ',
     'round_time_minute' => ' minúta(y).',
-    'allowRoundDown' => 'Povoliť zaokrúhľovanie smerom nadol.',
     'logged_in_as' => 'prihlásený ako:',
     'decimal_separator' => 'Oddeľovač desatín',
     'view_filter' => 'filtruj',
@@ -325,7 +324,6 @@ return [
     'StartTimeBeforeEndTime' => 'Čas začiatku by mal byť pred časom ukončenia.',
 
     'credits' => <<<'EOD'
-        If you do any alternations we would appreciate a posting on the <a href="%1$s">forum</a>.
         The latest developer version can be downloaded for test purposes <a href="%2$s">here</a>.
         <br /><br />
         Please support further development of Kimai with a <a href="%3$s">donation</a> or by extending its <a href="%5$s">translations</a>.

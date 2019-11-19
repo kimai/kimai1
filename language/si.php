@@ -71,7 +71,6 @@ return [
     "trackingNumber" => "Številka za sledenje",
     "cookiewarning" => "Vključi piškotke preden začneš.",
     "JSwarning" => "JavaScript mora biti aktiven.",
-    "designation" => "oznaka",
     "banned" => "Prepovedano (Račun zakljenjen)",
     "tooManyLogins" => "Preveč nepravilnih prijav - uporabnik ukinjen.",
     "accessDenied" => "Dostop zavrnjen!",
@@ -280,7 +279,6 @@ return [
     'StartTimeBeforeEndTime' => 'Začetni čas mora biti pred končnim časom.',
 
     'credits' => <<<'EOD'
-        Če boste naredili kaj sprememb, bi vas prosili, da nam jih pošljete na <a href="%1$s">forum</a>.
         Zadnja verzija je na voljo na <a href="%2$s">here</a> (naloži samo za testne namene!).
         <br /><br />
         Prosimo podprite nadaljni razvoj Kimai-a z donacijo na <a href="%3$s">donation</a> ali z razširitvijo podpore jezikov <a href="%5$s">language library</a>.

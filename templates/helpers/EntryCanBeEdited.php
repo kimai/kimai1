@@ -2,7 +2,7 @@
 /**
  * This file is part of
  * Kimai - Open Source Time Tracking // https://www.kimai.org
- * (c) 2006-2009 Kimai-Development-Team
+ * (c) 2006-2012 Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,21 +18,22 @@
  */
 
 /**
- * Query the Kimai project server for information about a new version.
- * The response will simply be passed through.
+ * Class Zend_View_Helper_EntryCanBeEdited
  */
-error_reporting(-1);
-require '../includes/basics.php';
+class Zend_View_Helper_EntryCanBeEdited extends Zend_View_Helper_Abstract
+{
+    /**
+     * @param array $entry
+     *
+     * @return bool
+     */
+    public function entryCanBeEdited(array $entry)
+    {
+        $kga = Kimai_Registry::getConfig();
 
-header('Content-Type: text/html; charset=utf-8');
-
-$check = new Kimai_Update_Check();
-$result = $check->checkForUpdate($kga['version'], $kga['revision']);
-
-if ($result == Kimai_Update_Check::RELEASE) {
-    echo $kga['lang']['updatecheck']['release'];
-} elseif ($result == Kimai_Update_Check::BETA) {
-    echo $kga['lang']['updatecheck']['beta'];
-} elseif ($result == Kimai_Update_Check::CURRENT) {
-    echo $kga['lang']['updatecheck']['current'];
+        if (!$kga->isEditLimit() || time() - $entry['end'] <= $kga->getEditLimit()) {
+            return true;
+        }
+        return false;
+    }
 }

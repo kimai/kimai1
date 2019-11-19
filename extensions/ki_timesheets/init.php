@@ -20,7 +20,7 @@
 // ==================================
 // = implementing standard includes =
 // ==================================
-include('../../includes/basics.php');
+include '../../includes/basics.php';
 
 $database = Kimai_Registry::getDatabase();
 
@@ -39,16 +39,16 @@ $in = $timeframe[0];
 $out = $timeframe[1];
 
 $view = new Zend_View();
-$view->setBasePath(WEBROOT . '/extensions/' . $dir_ext . '/' . $dir_templates);
-$view->addHelperPath(WEBROOT . '/templates/helpers', 'Zend_View_Helper');
+$view->setBasePath(WEBROOT . 'extensions/' . $dir_ext . '/' . $dir_templates);
+$view->addHelperPath(WEBROOT . 'templates/helpers', 'Zend_View_Helper');
 
 $view->assign('kga', $kga);
 
 // prevent IE from caching the response
-header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-header("Cache-Control: no-store, no-cache, must-revalidate");
-header("Cache-Control: post-check=0, pre-check=0", false);
-header("Pragma: no-cache");
+header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+header('Cache-Control: no-store, no-cache, must-revalidate');
+header('Cache-Control: post-check=0, pre-check=0', false);
+header('Pragma: no-cache');
 
 // Get the total time displayed in the table.
 if (isset($kga['customer'])) {

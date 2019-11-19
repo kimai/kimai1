@@ -11,7 +11,7 @@ set_include_path(
     )
 );
 
-require_once WEBROOT . '/libraries/autoload.php';
+require_once WEBROOT . 'libraries/autoload.php';
 
 echo '<script type="text/javascript">current=60;</script>';
 

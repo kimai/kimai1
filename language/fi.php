@@ -72,7 +72,6 @@ return [
     "trackingnr" => "Seurantanumero",
     "cookiewarning" => "Kytke ensin keksiasetukset päälle",
     "JSwarning" => "JavaScript on oltava päällä.",
-    "designation" => "nimittäminen",
     "banned" => "Estetty (tunnus lukittu)",
     "tooManyLogins" => "Liian monta epäonnistunutta kirjautumisyritystä - tunnus jäädytetty.",
     "accessDenied" => "Pääsy kielletty!",
@@ -280,7 +279,6 @@ return [
     'StartTimeBeforeEndTime' => 'Aloitusajankohdan on oltava ennen päättymisajankohtaa.',
 
     'credits' => <<<'EOD'
-	    Mikäli haluat tehdä mitään muutoksia, toivoisimme että lähettäisit viestisi (englanniksi) projektin <a href="%1$s">keskusteluun</a>.
 	    Viimeisin GIT-versio tuotteesta haettavissa <a href="%2$s">täältä</a> (testaa ensin!).
         <br /><br />
         Tue kehitystyötämme lähettämällä <a href="%3$s">lahjoitus</a> tai laajentamalla <a href="%5$s">kielikirjastoa</a>.

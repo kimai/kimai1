@@ -19,7 +19,6 @@
                 <?php echo $this->translate('lang')?>:
                 <?php echo $this->formSelect('language', $this->kga->getLanguage(true), ['class' => 'formfield'], array_combine($this->languages, $this->languages)); ?>
             </div>
-
             <div>
                 <input type="checkbox" name="show_update_warn" <?php if ($this->kga['show_update_warn']): ?> checked="checked" <?php endif; ?> value="1" class="formfield"> <?php echo $this->translate('show_update_warn')?>
             </div>
@@ -67,14 +66,19 @@
             </div>
             <div>
                 <?php echo $this->translate('round_time')?> <select name="roundPrecision" class="formfield">
-                    <option value="0" <?php if ($this->kga->getRoundPrecisionRecorderTimes() == 0): ?> selected="selected" <?php endif; ?>>-</option>
-                    <option value="1" <?php if ($this->kga->getRoundPrecisionRecorderTimes() == 1): ?> selected="selected" <?php endif; ?>>1</option>
-                    <option value="5" <?php if ($this->kga->getRoundPrecisionRecorderTimes() == 5): ?> selected="selected" <?php endif; ?>>5</option>
-                    <option value="10" <?php if ($this->kga->getRoundPrecisionRecorderTimes() == 10): ?> selected="selected" <?php endif; ?>>10</option>
-                    <option value="15" <?php if ($this->kga->getRoundPrecisionRecorderTimes() == 15): ?> selected="selected" <?php endif; ?>>15</option>
-                    <option value="15" <?php if ($this->kga->getRoundPrecisionRecorderTimes() == 20): ?> selected="selected" <?php endif; ?>>20</option>
-                    <option value="30" <?php if ($this->kga->getRoundPrecisionRecorderTimes() == 30): ?> selected="selected" <?php endif; ?>>30</option>
-                </select> <?php echo $this->translate('round_time_minute')?> <input type="checkbox" name="allowRoundDown" <?php if($this->kga->isRoundDownRecorderTimes()): ?> checked="checked" <?php endif; ?> value="1" class="formfield"> <?php echo $this->translate('allowRoundDown');?>
+                    <option value="0" <?php if ($this->kga->getRoundPrecisionRecorderTimes() === 0): ?> selected="selected" <?php endif; ?>>-</option>
+                    <option value="1" <?php if ($this->kga->getRoundPrecisionRecorderTimes() === 1): ?> selected="selected" <?php endif; ?>>1</option>
+                    <option value="5" <?php if ($this->kga->getRoundPrecisionRecorderTimes() === 5): ?> selected="selected" <?php endif; ?>>5</option>
+                    <option value="10" <?php if ($this->kga->getRoundPrecisionRecorderTimes() === 10): ?> selected="selected" <?php endif; ?>>10</option>
+                    <option value="15" <?php if ($this->kga->getRoundPrecisionRecorderTimes() === 15): ?> selected="selected" <?php endif; ?>>15</option>
+                    <option value="30" <?php if ($this->kga->getRoundPrecisionRecorderTimes() === 30): ?> selected="selected" <?php endif; ?>>30</option>
+                    <option value="60" <?php if ($this->kga->getRoundPrecisionRecorderTimes() === 60): ?> selected="selected" <?php endif; ?>>60</option>
+                </select> <?php echo $this->translate('round_time_minute')?>
+                <?php echo $this->translate('roundingMethod') ?> <select name="roundingMethod" class="formfield">
+                    <option value="default" <?php if ($this->kga->getRoundingMethod() === 'default'): ?> selected="selected" <?php endif; ?>><?php echo $this->translate('roundingMethod_default') ?></option>
+                    <option value="closest" <?php if ($this->kga->getRoundingMethod() === 'closest'): ?> selected="selected" <?php endif; ?>><?php echo $this->translate('roundingMethod_closest') ?></option>
+                    <option value="ceil" <?php if ($this->kga->getRoundingMethod() === 'ceil'): ?> selected="selected" <?php endif; ?>><?php echo $this->translate('roundingMethod_ceil') ?></option>
+                </select>
             </div>
             <div>
                 <?php echo $this->translate('decimal_separator')?>: <input type="text" name="decimalSeparator" size="1" value="<?php echo $this->escape($this->kga['conf']['decimalSeparator']) ?>" class="formfield">
@@ -116,18 +120,18 @@
         });
 
         $('#adminPanel_extension_form_editadv').ajaxForm({
-            target: '#adminPanel_extension_output',
-            success: function (result) {
-                if (result.errors.length == 0) {
-                    window.location.reload();
-                    return;
+	        success: function (result) {
+                if (result.errors.length > 0) {
+	                /* FIXME: output json error messages as html
+                	$('#adminPanel_extension_form_editadv_submit').blur();
+
+	                var $adminPanel_extension_output = $('#adminPanel_extension_output');
+	                $adminPanel_extension_output.width($('.adminPanel_extension_panel_header').width() - 22);
+	                $adminPanel_extension_output.show();
+	                */
+                } else {
+	                window.location.reload();
                 }
-                $('#adminPanel_extension_form_editadv_submit').blur();
-                var $adminPanel_extension_output = $('#adminPanel_extension_output');
-                $adminPanel_extension_output.width($('.adminPanel_extension_panel_header').width() - 22);
-                $adminPanel_extension_output.fadeIn(fading_enabled ? 500 : 0, function () {
-                    $adminPanel_extension_output.fadeOut(fading_enabled ? 4000 : 0);
-                });
             }
         });
     });

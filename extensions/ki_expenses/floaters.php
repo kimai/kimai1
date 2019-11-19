@@ -39,7 +39,7 @@ switch ($axAction) {
         // = display edit dialog for timesheet record   =
         // ==============================================
         if ($id) {
-            $expense = get_expense($id);
+            $expense = expense_get($id);
 
             // check if this entry may be edited
             if (!$database->global_role_allows($kga['user']['globalRoleID'], 'ki_expenses-ownEntry-edit')) {

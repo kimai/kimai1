@@ -16,15 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with Kimai; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- *
- *
- *
- *
- *
- *
- *
- *
- *
  */
 
 /**
@@ -86,7 +77,6 @@ return [
     "trackingNumber" => "N°",
     "cookiewarning" => "Les cookies doivent être acceptés ! Autoriser les cookies avant de continuer.",
     "JSwarning" => "JavaScript doit être activé ! Cette version ne fonctionne pas sans cela.",
-    "designation" => "désignation",
     "banned" => "Bloqué (Compte bloqué)",
     "tooManyLogins" => "Trop de mauvaises tentatives de connexion - utilisateur bloqué.",
     "accessDenied" => "Accès refusé !",
@@ -232,7 +222,6 @@ return [
     "checkGroupname" => "Vous devez entrer un nom de groupe dans le champ à gauche du bouton ajouter-un-groupe !",
     "checkGlobalRoleName" => "Vous devez entrer un nom de rôle dans le champ à gauche du bouton ajouter-un-rôle !",
     "checkMembershipRoleName" => "Vous devez entrer un nom de rôle dans le champ à gauche du bouton ajouter-un-rôle !",
-    "checkStatusname" => "Vous devez entrer un nom de statut dans le champ à gauche du bouton ajouter-un-statut !",
     "clickToReload" => "Cliquer ici pour relancer l'interface graphique",
     "sure" => "Etes-vous sûr ?",
     "clock" => "Horloge",
@@ -297,9 +286,8 @@ return [
     'table_date_format' => 'Format de la date pour les tables (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">pour la fonction strftime()</a>)',
     'round_time' => 'Arrondir le temps à ',
     'round_time_minute' => ' minute(s).',
-    "allowRoundDown" => "Permettre d'arrondir l'entrée à la baisse.",
     'logged_in_as' => 'Connecté en tant que :',
-
+    'logged_in_as' => 'Connecté en tant que:',
     'decimal_separator' => 'Séparateur décimal',
 
     'view_filter' => 'Voir le filtre',
@@ -356,7 +344,6 @@ et pourront être modifiés par la suite au besoin, sans limite.</strong>',
     'StartTimeBeforeEndTime' => 'Le temps de départ doit être antérieure au temps de fin.',
 
     'credits' => <<<'EOD'
-        Si vous faites des modifications, nous aprécierions que vous postiez sur <a href="%1$s">forum</a>.
         La dernière version peut être téléchargée <a href="%2$s">Ici</a> (Pour les test seulement!).
         <br /><br />
         SVP supportez les futurs développements de Kimai avec une <a href="%3$s">donation</a> ou en étendant sa <a href="%5$s">bibliothèque de langues</a>.
@@ -426,7 +413,6 @@ Choisissez un autre préfixe de table ou supprimez les tables existantes avec ce
         140 => "Mise a jour du fichier autoconf.php",
         'timezone' => 'Kimai supporte les fuseaux horaires. SVP sélectioner votre fuseau horaire par défaut.Il sera utilisé pour tous les utilisateurs et clients. les utilisateurs peuvent changer leur fuseau horaire.',
     ],
-
 
     'backup' => [
         0 => "L'outil de sauvegarde/restauration n' a pas encore été testé ! A utiliser à vos propres risques !",
@@ -567,4 +553,3 @@ Choisissez un autre préfixe de table ou supprimez les tables existantes avec ce
     "log_delete" => "Le journal a été effacé",
 
 ];
-?>

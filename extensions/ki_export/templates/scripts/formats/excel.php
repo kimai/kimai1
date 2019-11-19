@@ -23,7 +23,7 @@
  * @author Florian Lentsch <office@florian-lentsch.at>
  */
 
-require_once dirname(__FILE__) . '/../helpers/ExcelExporter.php';
+require_once __DIR__ . '/../helpers/ExcelExporter.php';
 
 $excel = new Kimai_Export_ExcelExporter();
 $excel->render($this->kga, $this->exportData, $this->columns, $this->custom_timeformat);

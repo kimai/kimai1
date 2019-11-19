@@ -30,7 +30,7 @@ class Kimai_Invoice_HtmlRenderer extends Kimai_Invoice_AbstractRenderer
     /**
      * Render the invoice.
      *
-     * @return mixed
+     * @throws \Zend_View_Exception
      */
     public function render()
     {
@@ -39,6 +39,7 @@ class Kimai_Invoice_HtmlRenderer extends Kimai_Invoice_AbstractRenderer
 
     /**
      * @return string
+     * @throws \Zend_View_Exception
      */
     public function getHtml()
     {

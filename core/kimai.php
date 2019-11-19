@@ -22,13 +22,13 @@ require_once '../includes/basics.php';
 $database = Kimai_Registry::getDatabase();
 
 $view = new Zend_View();
-$view->setBasePath(WEBROOT . '/templates');
+$view->setBasePath(WEBROOT . 'templates');
 
 // prevent IE from caching the response
-header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-header("Cache-Control: no-store, no-cache, must-revalidate");
-header("Cache-Control: post-check=0, pre-check=0", false);
-header("Pragma: no-cache");
+header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+header('Cache-Control: no-store, no-cache, must-revalidate');
+header('Cache-Control: post-check=0, pre-check=0', false);
+header('Pragma: no-cache');
 
 // ==================================
 // = implementing standard includes =
@@ -41,7 +41,7 @@ $user = checkUser();
 // der updater.php weiss dann welche Aenderungen an der Datenbank vorgenommen werden muessen.
 checkDBversion('..');
 
-$extensions = new Kimai_Extensions($kga, WEBROOT . '/extensions/');
+$extensions = new Kimai_Extensions($kga, WEBROOT . 'extensions/');
 $extensions->loadConfigurations();
 
 // ============================================
@@ -67,16 +67,16 @@ if (isset($kga['customer'])) {
 // =======================================
 // = Display date and time in the header =
 // =======================================
-$wd = $kga['lang']['weekdays_short'][date("w", time())];
+$wd = $kga['lang']['weekdays_short'][date('w')];
 
 $dp_start = 0;
-if ($kga['calender_start'] != "") {
+if ($kga['calender_start'] != '') {
     $dp_start = $kga['calender_start'];
-} else if (isset($kga['user'])) {
-    $dp_start = date("d/m/Y", $database->getjointime($kga['user']['userID']));
+} elseif (isset($kga['user'])) {
+    $dp_start = date('d/m/Y', $database->getjointime($kga['user']['userID']));
 }
 
-$dp_today = date("d/m/Y", time());
+$dp_today = date('d/m/Y');
 
 $view->assign('dp_start', $dp_start);
 $view->assign('dp_today', $dp_today);
@@ -267,7 +267,7 @@ $view->assign('show_activity_edit_button', isset($kga['user']) && coreObjectActi
 $view->assign('activity_display', $view->render("lists/activities.php"));
 
 if (isset($kga['user'])) {
-    $view->assign('showInstallWarning', file_exists(WEBROOT . '/installer'));
+    $view->assign('showInstallWarning', file_exists(WEBROOT . 'installer'));
 } else {
     $view->assign('showInstallWarning', false);
 }

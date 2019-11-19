@@ -324,6 +324,14 @@ class Kimai_Config extends Kimai_ArrayObject
     }
 
     /**
+     * @return string
+     */
+    public function getRoundingMethod()
+    {
+        return $this->get('roundingMethod', 'default');
+    }
+
+    /**
      * @return int
      */
     public function getLoginBanTime()
@@ -382,6 +390,7 @@ class Kimai_Config extends Kimai_ArrayObject
 
     /**
      * @return bool
+     * @deprecated Use getRoundingMethod instead
      */
     public function isRoundDownRecorderTimes()
     {

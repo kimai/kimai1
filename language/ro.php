@@ -281,7 +281,6 @@ return [
     'table_date_format' => 'Formatarea datei pentru tabele (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">notare pentru strftime()</a>)',
     'round_time' => 'Rotunjire timp cu ',
     'round_time_minute' => ' minut(e).',
-    'allowRoundDown' => 'Aplica la toate inregisrarile.',
     'logged_in_as' => 'conectat ca:',
     'decimal_separator' => 'Separator zecimal',
     'view_filter' => 'Filtrare',
@@ -322,7 +321,6 @@ return [
     'StartTimeBeforeEndTime' => 'Timpul de start ar trebui sa fie inaintea celui de sfarsit. :)',
 
     'credits' => <<<'EOD'
-        Daca faceti modificari, am aprecia o postare pe <a href="%1$s">forum</a>.
         Ultima versiune Dev pentru testari se poate descarca de <a href="%2$s">aici</a>.
         <br /><br />
         Va rugam sa incercati sa suportati dezvoltarea Kimai cu o mica <a href="%3$s">donatie</a> sau extinzand <a href="%5$s">traducerile</a>.
