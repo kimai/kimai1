@@ -32,12 +32,12 @@ $database = Kimai_Registry::getDatabase();
 // = parse general parameters =
 // ============================
 
-if ($axAction == 'export_csv' ||
-    $axAction == 'export_pdf' ||
-    $axAction == 'export_pdf2' ||
-    $axAction == 'export_html' ||
-    $axAction == 'export_xls' ||
-    $axAction == 'reload'
+if ($axAction === 'export_csv' ||
+    $axAction === 'export_pdf' ||
+    $axAction === 'export_pdf2' ||
+    $axAction === 'export_html' ||
+    $axAction === 'export_xls' ||
+    $axAction === 'reload'
 ) {
     if (isset($_REQUEST['axColumns'])) {
         $axColumns = explode('|', $_REQUEST['axColumns']);
@@ -233,7 +233,7 @@ switch ($axAction) {
             $timeSheetSummary = [];
             $expenseSummary = [];
             foreach ($exportData as $one_entry) {
-                if ($one_entry['type'] == 'timeSheet') {
+                if ($one_entry['type'] === 'timeSheet') {
                     if (isset($timeSheetSummary[$one_entry['activityID']])) {
                         $timeSheetSummary[$one_entry['activityID']]['time'] += $one_entry['decimalDuration']; //Sekunden
                         $timeSheetSummary[$one_entry['activityID']]['wage'] += $one_entry['wage']; //Currency

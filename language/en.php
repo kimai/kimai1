@@ -458,7 +458,7 @@ Choose another table prefix or delete existing tables with this prefix in order 
         'times_and_expenses' => 'times and expenses',
         'times' => 'times',
         'expenses' => 'expenses',
-        'reverse_order' => 'older entries first',
+        'reverse_order' => 'Older entries first',
         'time_period' => 'Time period',
         'duration_unit' => 'h',
         'time_type' => 'Time format',
