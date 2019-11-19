@@ -10,7 +10,6 @@
     </div>
     <div class="floater_content">
         <form id="export_extension_form_export_PDF" action="../extensions/ki_export/processor.php" method="post" target="_blank">
-            <!-- <input type="hidden" name="id" value="" /> -->
             <input type="hidden" name="axValue" id="axValue" value=""/>
             <input type="hidden" name="first_day" id="first_day" value=""/>
             <input type="hidden" name="last_day" id="last_day" value=""/>

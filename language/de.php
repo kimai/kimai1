@@ -277,7 +277,10 @@ return [
     'table_time_format' => 'Format der Zeiten in den Tabellen (<a href="http://php.net/manual/de/function.strftime.php" target="_blank">Notation für strftime()</a>)',
     'round_time' => 'Zeit runden auf ',
     'round_time_minute' => ' Minute(n).',
-    'allowRoundDown' => 'Erlaube das Abrunden von Zeiten.',
+    'roundingMethod' => 'Rundungsmethode',
+    'roundingMethod_default' => 'Standard (Start ab, Stop auf)',
+    'roundingMethod_closest' => 'Mathematisch (Start auf/ab, Stop auf/ab)',
+    'roundingMethod_ceil' => 'Immer Aufrunden',
     'logged_in_as' => 'Angemeldet als:',
     'decimal_separator' => 'Dezimal-Trennzeichen',
     'view_filter' => 'Ansichtsfilter',
@@ -320,7 +323,6 @@ return [
     'StartTimeBeforeEndTime' => 'Die Startzeit muss vor der Endzeit liegen.',
 
     'credits' => <<<'EOD'
-        Wenn Sie Modifikationen vornehmen würden wir uns über eine Nachricht im <a href="%1$s">Forum</a> freuen.
         Die neueste Entwickler Version kann für Testzwecke <a href="%2$s">hier</a> heruntergeladen werden.
         <br /><br />
         Bitte unterstützen Sie die weitere Entwicklung von Kimai mit einer <a href="%3$s">Spende</a>

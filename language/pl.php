@@ -273,7 +273,6 @@ return [
     'StartTimeBeforeEndTime' => 'Czas pocztkowy musi być mniejszy niż czas końcowy.',
 
     'credits' => <<<'EOD'
-        Jeśli dokonasz jakichkolwiek przeróbek, modyfikacji będziemy wdzięczni za opublikowanie ich na <a href="%1$s">forum</a>.
         Ostatnie wersje do pobrania <a href="%2$s">tutaj</a> (tylko w celach testowych!).
         <br /><br />
         Wspomóż dalszy rozwój Kimai poprzez <a href="%3$s">donację</a> lub poprzez rozbudowę biblioteki <a href="%5$s">języków</a>.

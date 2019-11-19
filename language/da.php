@@ -270,7 +270,6 @@ return [
     'change' => 'skift',
 
     'credits' => <<<'EOD'
-        Hvis du foretager ændringer, ville vi værdsætte en postering på <a href="%1$s">forum</a>.
         Nyeste version kan downloades <a href="%2$s">her</a> (download kun med test for øje!).
         <br /><br />
         Støt gerne den videre udvikling af Kimai med en <a href="%3$s">donation</a> eller ved at bidrage til de

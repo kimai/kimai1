@@ -270,7 +270,6 @@ return [
     'table_date_format' => 'Datum opmaak voor tabellen (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">notation for strftime()</a>)',
     'round_time' => 'Tijd afronden op ',
     'round_time_minute' => ' minuten.',
-    'allowRoundDown' => 'Sta toe invoer naar beneden af te ronden.',
     'logged_in_as' => 'Ingelogd als:',
     'decimal_separator' => 'Decimaal scheidingsteken',
     'view_filter' => 'toon filter',
@@ -311,7 +310,6 @@ return [
     'StartTimeBeforeEndTime' => 'De start tijd moet voor de eind tijd zijn.',
 
     'credits' => <<<'EOD'
-        If you do any alternations we would appreciate a posting on the <a href="%1$s">forum</a>.
         The latest developer version can be downloaded for test purposes <a href="%2$s">here</a>.
         <br /><br />
         Please support further development of Kimai with a <a href="%3$s">donation</a> or by extending its <a href="%5$s">translations</a>.

@@ -338,7 +338,7 @@ exec_query("INSERT INTO `${p}configuration` (`option`, `value`) VALUES
 ('table_time_format', '%H:%M'),
 ('language', '" . $kga['language'] . "'),
 ('roundPrecision', '1'),
-('allowRoundDown', '1'),
+('roundingMethod', 'default'),
 ('decimalSeparator', ','),
 ('durationWithSeconds', '0'),
 ('exactSums', '0'),

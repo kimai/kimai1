@@ -33,7 +33,7 @@ class RoundingTest extends TestCase
     {
         $start = time() - 3600;
         $end = time() + 3600;
-        $actual = Kimai_Rounding::roundTimespan($start, $end, 0, true);
+        $actual = Kimai_Rounding::roundTimespan($start, $end, 0, 'default');
 
         $this->assertInternalType('array', $actual);
         $this->assertArrayHasKey('start', $actual);
@@ -50,7 +50,7 @@ class RoundingTest extends TestCase
     {
         $start = strtotime('2019-10-26T17:00:00+00:00');
         $end =   strtotime('2019-10-26T17:15:00+00:00');
-        $actual = Kimai_Rounding::roundTimespan($start, $end, 15, false);
+        $actual = Kimai_Rounding::roundTimespan($start, $end, 15, 'ceil');
 
         $this->assertInternalType('array', $actual);
         $this->assertArrayHasKey('start', $actual);
@@ -67,7 +67,7 @@ class RoundingTest extends TestCase
     {
         $start = strtotime('2019-10-26T17:05:00+00:00'); // round up to 17:15
         $end =   strtotime('2019-10-26T17:20:00+00:00'); // round up to 17:30
-        $actual = Kimai_Rounding::roundTimespan($start, $end, 15, false);
+        $actual = Kimai_Rounding::roundTimespan($start, $end, 15, 'ceil');
 
         $this->assertInternalType('array', $actual);
         $this->assertArrayHasKey('start', $actual);
@@ -84,7 +84,7 @@ class RoundingTest extends TestCase
 
         $start = strtotime('2019-10-26T17:00:00+00:00');
         $end =   strtotime('2019-10-26T17:15:00+00:00');
-        $actual = Kimai_Rounding::roundTimespan($start, $end, 15, true);
+        $actual = Kimai_Rounding::roundTimespan($start, $end, 15, 'default');
 
         $this->assertInternalType('array', $actual);
         $this->assertArrayHasKey('start', $actual);
@@ -101,7 +101,7 @@ class RoundingTest extends TestCase
 
         $start = strtotime('2019-10-26T17:05:00+00:00'); // round down to 17:00
         $end =   strtotime('2019-10-26T17:16:00+00:00'); // round up to 17:30
-        $actual = Kimai_Rounding::roundTimespan($start, $end, 15, true);
+        $actual = Kimai_Rounding::roundTimespan($start, $end, 15, 'default');
 
         $this->assertInternalType('array', $actual);
         $this->assertArrayHasKey('start', $actual);
@@ -118,7 +118,7 @@ class RoundingTest extends TestCase
     {
         $start = strtotime('2016-03-19T16:59:33+00:00'); // round down to 16:45
         $end =   strtotime('2016-03-19T18:46:17+00:00'); // round up to 19:00
-        $actual = Kimai_Rounding::roundTimespan($start, $end, 15, true);
+        $actual = Kimai_Rounding::roundTimespan($start, $end, 15, 'default');
 
         $this->assertInternalType('array', $actual);
         $this->assertArrayHasKey('start', $actual);

@@ -277,7 +277,6 @@ return [
     'table_date_format' => 'Tabelite kuupäevavorming (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">tähiste juhend</a>)',
     'round_time' => 'Aeg ümardatakse täpsusele',
     'round_time_minute' => ' minut(it).',
-    'allowRoundDown' => 'Väiksemaks ümardamine on lubatud.',
     'logged_in_as' => 'Sees kasutajana',
 
     'decimal_separator' => 'Kümnendkohti eraldab',
@@ -332,7 +331,6 @@ return [
     'StartTimeBeforeEndTime' => 'Algusaeg peab olema enne lõpuaega.',
 
     'credits' => <<<'EOD'
-        Kui teete Kimai’sse muudatusi, oleksime tänulikud, kui sellest <a href="%1$s">meie foorumis</a> teada annate.
         Uusima arendusversiooni saate alla laadida <a href="%2$s">siit</a> (aga ainult testimiseks!).
         <br /><br />
         Palun toetage Kimai edasist arendamist <a href="%3$s">annetusega</a> või laiendades Kimai

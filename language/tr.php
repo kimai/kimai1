@@ -280,7 +280,6 @@ return [
     'table_time_format' => 'Tablolar için saat formatı (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">notation for strftime()</a>)',
     'round_time' => 'Saati şuna yuvarla ',
     'round_time_minute' => ' dakika.',
-    'allowRoundDown' => 'Aşağı yuvarlamaya müsaade et.',
     'logged_in_as' => 'olarak giriş yapıldı:',
     'decimal_separator' => 'ondalık ayırıcısı',
     'view_filter' => 'filtreyi göster',
@@ -323,7 +322,6 @@ return [
     'StartTimeBeforeEndTime' => 'Başlangıç saati, bitişten önce olmalıdır.',
 
     'credits' => <<<'EOD'
-        If you do any alternations we would appreciate a posting on the <a href="%1$s">forum</a>.
         The latest developer version can be downloaded for test purposes <a href="%2$s">here</a>.
         <br /><br />
         Please support further development of Kimai with a <a href="%3$s">donation</a> or by extending its <a href="%5$s">translations</a>.

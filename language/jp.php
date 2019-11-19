@@ -270,7 +270,6 @@ return [
     'table_date_format' => 'テーブルの日付フォーマット (<a href="http://php.net/manual/ja/function.strftime.php" target="_blank">strftime()の表記法</a>)',
     'round_time' => '時間を丸める',
     'round_time_minute' => ' 分に丸める',
-    'allowRoundDown' => 'エントリーに切り下げを可能する',
     'logged_in_as' => '現在ユーザー：',
     'decimal_separator' => '小数点の記号',
     'view_filter' => 'ビューフィルター',
@@ -309,7 +308,6 @@ Times: 「時時:分分:秒秒」 or 「時時:分分」 or 「時時」　だ�
     'StartTimeBeforeEndTime' => '開始時刻は終了時間の前に入力しなければならない',
 
     'credits' => <<<'EOD'
-        If you do any alternations we would appreciate a posting on the <a href="%1$s">forum</a>.
         The latest developer version can be downloaded for test purposes <a href="%2$s">here</a>.
         <br /><br />
         Please support further development of Kimai with a <a href="%3$s">donation</a> or

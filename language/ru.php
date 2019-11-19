@@ -269,7 +269,6 @@ return [
     'table_date_format' => 'Date format for tables (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">notation for strftime()</a>)',
     'round_time' => 'Округлять время до ',
     'round_time_minute' => ' минут.',
-    'allowRoundDown' => 'Разрешить округлять в меньшую сторону.',
     'logged_in_as' => 'Вошел как',
     'decimal_separator' => 'Decimal separator',
     'view_filter' => 'view filter',
@@ -308,7 +307,6 @@ return [
     'StartTimeBeforeEndTime' => 'The start time must be before the end time.',
 
     'credits' => <<<'EOD'
-        If you do any alternations we would appreciate a posting on the <a href="%1$s">forum</a>.
         The latest developer version can be downloaded for test purposes <a href="%2$s">here</a>.
         <br /><br />
         Please support further development of Kimai with a <a href="%3$s">donation</a> or

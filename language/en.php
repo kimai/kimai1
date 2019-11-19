@@ -280,7 +280,10 @@ return [
     'table_time_format' => 'Time format for tables (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">notation for strftime()</a>)',
     'round_time' => 'Round time to ',
     'round_time_minute' => ' minute(s).',
-    'allowRoundDown' => 'Allow rounding entries down.',
+    'roundingMethod' => 'Rounding method',
+    'roundingMethod_default' => 'Default (Start down, Stop up)',
+    'roundingMethod_closest' => 'Mathematical (Start up/down, Stop up/down)',
+    'roundingMethod_ceil' => 'Always round up',
     'logged_in_as' => 'logged in as:',
     'decimal_separator' => 'Decimal separator',
     'view_filter' => 'view filter',
@@ -323,7 +326,6 @@ return [
     'StartTimeBeforeEndTime' => 'The start time must be before the end time.',
 
     'credits' => <<<'EOD'
-        If you do any alternations we would appreciate a posting on the <a href="%1$s">forum</a>.
         The latest developer version can be downloaded for test purposes <a href="%2$s">here</a>.
         <br /><br />
         Please support further development of Kimai with a <a href="%3$s">donation</a> or by extending its <a href="%5$s">translations</a>.
@@ -456,7 +458,7 @@ Choose another table prefix or delete existing tables with this prefix in order 
         'times_and_expenses' => 'times and expenses',
         'times' => 'times',
         'expenses' => 'expenses',
-        'reverse_order' => 'older entries first',
+        'reverse_order' => 'Older entries first',
         'time_period' => 'Time period',
         'duration_unit' => 'h',
         'time_type' => 'Time format',
