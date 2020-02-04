@@ -15,7 +15,7 @@ Go ahead to https://github.com/kevinpapst/kimai2 and use the latest and greatest
 
 ## Announcement Kimai v2 (June 2018)
 
-We are thrilled to announce that we are working on the **next major version of Kimai** and is ready for production. There is even a migration from Kimai v1 to Kimai v2 available. Why not give it a try?
+We are thrilled to announce that we are working on the **next major version of Kimai** which is ready for production from now on. There is a migration script from Kimai v1 to Kimai v2 available. Why not give it a try?
 
 Go ahead and [read our blog posting](https://www.kimai.org/blog/2018/kimai-v2-announcement/) to find out more.
 
