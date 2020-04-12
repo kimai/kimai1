@@ -124,7 +124,11 @@ switch ($axAction) {
             $view->assign('id', 0);
         }
 
-        $countries = Zend_Locale::getTranslationList('Territory', $kga['language'], 2);
+        try {
+            $countries = Zend_Locale::getTranslationList('Territory', $kga['language'], 2);
+        } catch (Exception $e) {
+            $countries = Zend_Locale::getTranslationList('Territory');
+        }
         asort($countries);
 
         $view->assign('countries', $countries);
