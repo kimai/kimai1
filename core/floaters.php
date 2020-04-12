@@ -106,7 +106,7 @@ switch ($axAction) {
                 $view->assign('id', $id);
             }
         } else {
-            $view->assign('customer', array('timezone' => $kga['timezone']));
+            $view->assign('timezone',  $kga['timezone']);
         }
 
         $view->assign('timezones', timezoneList());
@@ -127,7 +127,7 @@ switch ($axAction) {
         try {
             $countries = Zend_Locale::getTranslationList('Territory', $kga['language'], 2);
         } catch (Exception $e) {
-            $countries = Zend_Locale::getTranslationList('Territory');
+            $countries = Zend_Locale::getTranslationList('Territory', null, 2);
         }
         asort($countries);
 
