@@ -106,7 +106,7 @@ switch ($axAction) {
                 $view->assign('id', $id);
             }
         } else {
-            $view->assign('timezone', $kga['timezone']);
+            $view->assign('customer', array('timezone' => $kga['timezone']));
         }
 
         $view->assign('timezones', timezoneList());
