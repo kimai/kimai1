@@ -327,7 +327,7 @@ switch ($axAction) {
                 // validate data
                 $errorMessages = [];
 
-                if (count($_REQUEST['projectGroups']) == 0) {
+                if (empty($_REQUEST['projectGroups'])) {
                     $errorMessages['projectGroups'] = $kga['lang']['atLeastOneGroup'];
                 }
 
