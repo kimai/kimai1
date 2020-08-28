@@ -2972,7 +2972,7 @@ class Kimai_Database_Mysql
                 case 'roundMinutes':
                 case 'roundSeconds':
                     $config->getSettings()->set($key, $value);
-                    // break is not here on purpose!
+                    // no break
 
                 case 'adminmail':
                 case 'loginTries':
