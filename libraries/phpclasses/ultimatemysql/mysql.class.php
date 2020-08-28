@@ -1588,7 +1588,7 @@ class MySQL
 				if (strlen($value) == 0) {
 					$return_value = "NULL";
 				} else {
-					if (get_magic_quotes_gpc()) {
+					if (version_compare(PHP_VERSION, "5.4.0", '<') && get_magic_quotes_gpc()) {
 						$value = stripslashes($value);
 					}
 					$return_value = "'" . str_replace("'", "''", $value) . "'";
