@@ -299,7 +299,7 @@ function createPassword($length)
     $i = 0;
     $password = '';
     while ($i <= $length) {
-        $password .= $chars{mt_rand(0, strlen($chars) - 1)};
+        $password .= $chars[mt_rand(0, strlen($chars) - 1)];
         $i++;
     }
     return $password;

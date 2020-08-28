@@ -2495,7 +2495,7 @@ class Kimai_Database_Mysql
                   FROM ${p}projects AS project
                   JOIN ${p}customers AS customer USING(customerID)
                   JOIN ${p}groups_projects USING(projectID)
-                  WHERE ${p}groups_projects.groupID IN (" . implode($groups, ',') . ")
+                  WHERE ${p}groups_projects.groupID IN (" . implode(',', $groups) . ")
                   AND project.trash=0";
         }
 
@@ -2972,7 +2972,7 @@ class Kimai_Database_Mysql
                 case 'roundMinutes':
                 case 'roundSeconds':
                     $config->getSettings()->set($key, $value);
-                    // break is not here on purpose!
+                    // no break
 
                 case 'adminmail':
                 case 'loginTries':
@@ -3239,7 +3239,7 @@ class Kimai_Database_Mysql
             $query = "SELECT DISTINCT customerID, name, contact, visible
               FROM ${p}customers
               JOIN ${p}groups_customers AS g_c USING (customerID)
-              WHERE g_c.groupID IN (" . implode($groups, ',') . ")
+              WHERE g_c.groupID IN (" . implode(',', $groups) . ")
                 AND trash=0
               ORDER BY visible DESC, name;";
         }
@@ -3288,7 +3288,7 @@ class Kimai_Database_Mysql
             $query = "SELECT DISTINCT activityID, name, visible
               FROM ${p}activities
               JOIN ${p}groups_activities AS g_a USING(activityID)
-              WHERE g_a.groupID IN (" . implode($groups, ',') . ")
+              WHERE g_a.groupID IN (" . implode(',', $groups) . ")
                 AND trash=0
               ORDER BY visible DESC, name;";
         }
@@ -3348,7 +3348,7 @@ class Kimai_Database_Mysql
             FROM ${p}activities AS activity
             JOIN ${p}groups_activities USING(activityID)
             LEFT JOIN ${p}projects_activities p_a USING(activityID)
-            WHERE `${p}groups_activities`.`groupID`  IN (" . implode($groups, ',') . ")
+            WHERE `${p}groups_activities`.`groupID`  IN (" . implode(',', $groups) . ")
               AND activity.trash=0
               AND (projectID = $projectID OR projectID IS NULL)
             ORDER BY visible DESC, name;";
