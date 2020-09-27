@@ -3,12 +3,23 @@
 [![Build status](https://travis-ci.org/kimai/kimai.svg?branch=master)](https://travis-ci.org/kimai/kimai "Current build status")
  [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/kimai/kimai.svg)](http://isitmaintained.com/project/kimai/kimai "Average time to resolve an issue")
  [![Percentage of issues still open](http://isitmaintained.com/badge/open/kimai/kimai.svg)](http://isitmaintained.com/project/kimai/kimai "Percentage of issues still open")
- [![Join the chat at https://gitter.im/kimai/kimai](https://badges.gitter.im/kimai/kimai.svg)](https://gitter.im/kimai/kimai)
 
 Kimai Time Tracking
 ===================
 
 ![Kimai](https://raw.githubusercontent.com/kimai/documentation/master/assets/intro.jpg)
+
+## 📢 Please be aware that there is no further development of Kimai v1!
+
+Go ahead to https://github.com/kevinpapst/kimai2 and use the latest and greatest release rewritten from scratch which is also much more extendable than Kimai v1. If you are still running Kimai v1 and need support, we are available for paid support.
+
+## Announcement Kimai v2 (June 2018)
+
+We are thrilled to announce that we are working on the **next major version of Kimai** which is ready for production from now on. There is a migration script from Kimai v1 to Kimai v2 available. Why not give it a try?
+
+Go ahead and [read our blog posting](https://www.kimai.org/blog/2018/kimai-v2-announcement/) to find out more.
+
+## Intro
 
 This is the repository of Kimai, a open source time tracking software
 that runs on (almost) every webserver with PHP and MySQL.
@@ -17,12 +28,6 @@ You can get more information about this time-tracking software:
 
 * at our [website](https://www.kimai.org)
 * in the [documentation](https://www.kimai.org/v1/)
-
-## Announcement Kimai v2 (June 2018)
-
-We are thrilled to announce  that we are working on the **next major version of Kimai**.
-
-Go ahead and [read our blog posting](https://www.kimai.org/blog/2018/kimai-v2-announcement/) to find out more.
 
 ## Features
 

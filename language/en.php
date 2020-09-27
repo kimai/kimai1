@@ -120,7 +120,7 @@ return [
 
     "street" => "Street",
     "zipcode" => "Zipcode",
-    "city" => "City",
+    "city" => "City, State",
     "country" => "Country",
     "telephon" => "Phone",
     "fax" => "Fax",

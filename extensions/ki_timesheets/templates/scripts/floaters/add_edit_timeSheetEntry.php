@@ -38,7 +38,7 @@ $autoSelection = $this->kga->getSettings()->isUseAutoSelection();
         </ul>
     </div>
 
-    <form id="ts_ext_form_add_edit_timeSheetEntry" action="../extensions/ki_timesheets/processor.php" method="post">
+    <form id="ts_ext_form_add_edit_timeSheetEntry" action="../extensions/ki_timesheets/processor.php" method="post" autocomplete="off">
         <input type="hidden" name="id" value="<?php echo $this->id?>" />
         <input type="hidden" name="axAction" value="add_edit_timeSheetEntry" />
         <input type="hidden" id="stepMinutes" value="<?php echo $this->kga['conf']['roundMinutes']?>" />
