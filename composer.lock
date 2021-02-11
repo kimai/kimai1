@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "76f431007569958e498f2fab8e9db764",
+    "content-hash": "41975133e8fbfbca84bc8b2d4d770fd0",
     "packages": [
         {
             "name": "phpoffice/phpexcel",
@@ -66,21 +66,25 @@
                 "xls",
                 "xlsx"
             ],
+            "support": {
+                "issues": "https://github.com/PHPOffice/PHPExcel/issues",
+                "source": "https://github.com/PHPOffice/PHPExcel/tree/master"
+            },
             "abandoned": "phpoffice/phpspreadsheet",
             "time": "2018-11-22T23:07:24+00:00"
         },
         {
             "name": "tecnickcom/tcpdf",
-            "version": "6.3.2",
+            "version": "6.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tecnickcom/TCPDF.git",
-                "reference": "9fde7bb9b404b945e7ea88fb7eccd23d9a4e324b"
+                "reference": "19a535eaa7fb1c1cac499109deeb1a7a201b4549"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tecnickcom/TCPDF/zipball/9fde7bb9b404b945e7ea88fb7eccd23d9a4e324b",
-                "reference": "9fde7bb9b404b945e7ea88fb7eccd23d9a4e324b",
+                "url": "https://api.github.com/repos/tecnickcom/TCPDF/zipball/19a535eaa7fb1c1cac499109deeb1a7a201b4549",
+                "reference": "19a535eaa7fb1c1cac499109deeb1a7a201b4549",
                 "shasum": ""
             },
             "require": {
@@ -109,7 +113,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "LGPL-3.0"
+                "LGPL-3.0-only"
             ],
             "authors": [
                 {
@@ -129,20 +133,24 @@
                 "pdf417",
                 "qrcode"
             ],
-            "time": "2019-09-20T09:35:01+00:00"
+            "support": {
+                "issues": "https://github.com/tecnickcom/TCPDF/issues",
+                "source": "https://github.com/tecnickcom/TCPDF/tree/6.3.5"
+            },
+            "time": "2020-02-14T14:20:12+00:00"
         },
         {
             "name": "tinybutstrong/tinybutstrong",
-            "version": "v3.11.0",
+            "version": "v3.12.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Skrol29/tinybutstrong.git",
-                "reference": "ff416616690fd73d47529376880a883e9dec37b5"
+                "reference": "4db2833df0c565acd9ca6c6143bd0f8d5dd39192"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Skrol29/tinybutstrong/zipball/ff416616690fd73d47529376880a883e9dec37b5",
-                "reference": "ff416616690fd73d47529376880a883e9dec37b5",
+                "url": "https://api.github.com/repos/Skrol29/tinybutstrong/zipball/4db2833df0c565acd9ca6c6143bd0f8d5dd39192",
+                "reference": "4db2833df0c565acd9ca6c6143bd0f8d5dd39192",
                 "shasum": ""
             },
             "require": {
@@ -169,7 +177,11 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2019-02-10T15:33:14+00:00"
+            "support": {
+                "issues": "https://github.com/Skrol29/tinybutstrong/issues",
+                "source": "https://github.com/Skrol29/tinybutstrong/tree/v3.12.2"
+            },
+            "time": "2020-11-03T23:23:38+00:00"
         },
         {
             "name": "zendframework/zendframework1",
@@ -216,6 +228,10 @@
                 "ZF1",
                 "framework"
             ],
+            "support": {
+                "issues": "https://github.com/zendframework/zf1/issues",
+                "source": "https://github.com/zendframework/zf1/tree/release-1.12.20"
+            },
             "abandoned": "zendframework/zendframework",
             "time": "2016-09-08T14:50:34+00:00"
         }
@@ -223,16 +239,16 @@
     "packages-dev": [
         {
             "name": "components/jquery",
-            "version": "3.3.1",
+            "version": "3.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/components/jquery.git",
-                "reference": "459648cda77875519c5da3ae1dd0ed5d170aa649"
+                "reference": "b33e8f0f9a1cb2ae390cf05d766a900b53d2125b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/components/jquery/zipball/459648cda77875519c5da3ae1dd0ed5d170aa649",
-                "reference": "459648cda77875519c5da3ae1dd0ed5d170aa649",
+                "url": "https://api.github.com/repos/components/jquery/zipball/b33e8f0f9a1cb2ae390cf05d766a900b53d2125b",
+                "reference": "b33e8f0f9a1cb2ae390cf05d766a900b53d2125b",
                 "shasum": ""
             },
             "type": "component",
@@ -261,7 +277,14 @@
             ],
             "description": "jQuery JavaScript Library",
             "homepage": "http://jquery.com",
-            "time": "2018-03-04T13:23:48+00:00"
+            "support": {
+                "forum": "http://forum.jquery.com",
+                "irc": "irc://irc.freenode.org/jquery",
+                "issues": "https://github.com/jquery/jquery/issues",
+                "source": "https://github.com/jquery/jquery",
+                "wiki": "http://docs.jquery.com/"
+            },
+            "time": "2020-05-05T13:21:02+00:00"
         },
         {
             "name": "malsup/form",
@@ -311,6 +334,11 @@
                 "form",
                 "upload"
             ],
+            "support": {
+                "issues": "https://github.com/malsup/form/issues",
+                "source": "https://github.com/malsup/form/tree/master",
+                "wiki": "http://jquery.malsup.com/form/"
+            },
             "abandoned": "jquery-form/form",
             "time": "2014-09-03T01:10:13+00:00"
         },
@@ -373,6 +401,11 @@
                 "testing",
                 "xunit"
             ],
+            "support": {
+                "irc": "irc://irc.freenode.net/phpunit",
+                "issues": "https://github.com/sebastianbergmann/php-code-coverage/issues",
+                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/1.2.18"
+            },
             "time": "2014-09-02T10:13:14+00:00"
         },
         {
@@ -420,6 +453,11 @@
                 "filesystem",
                 "iterator"
             ],
+            "support": {
+                "irc": "irc://irc.freenode.net/phpunit",
+                "issues": "https://github.com/sebastianbergmann/php-file-iterator/issues",
+                "source": "https://github.com/sebastianbergmann/php-file-iterator/tree/1.4.5"
+            },
             "time": "2017-11-27T13:52:08+00:00"
         },
         {
@@ -461,6 +499,10 @@
             "keywords": [
                 "template"
             ],
+            "support": {
+                "issues": "https://github.com/sebastianbergmann/php-text-template/issues",
+                "source": "https://github.com/sebastianbergmann/php-text-template/tree/1.2.1"
+            },
             "time": "2015-06-21T13:50:34+00:00"
         },
         {
@@ -510,6 +552,10 @@
             "keywords": [
                 "timer"
             ],
+            "support": {
+                "issues": "https://github.com/sebastianbergmann/php-timer/issues",
+                "source": "https://github.com/sebastianbergmann/php-timer/tree/master"
+            },
             "time": "2017-02-26T11:10:40+00:00"
         },
         {
@@ -560,6 +606,12 @@
             "keywords": [
                 "tokenizer"
             ],
+            "support": {
+                "irc": "irc://irc.freenode.net/phpunit",
+                "issues": "https://github.com/sebastianbergmann/php-token-stream/issues",
+                "source": "https://github.com/sebastianbergmann/php-token-stream/tree/1.2.2"
+            },
+            "abandoned": true,
             "time": "2014-03-03T05:10:30+00:00"
         },
         {
@@ -633,6 +685,11 @@
                 "testing",
                 "xunit"
             ],
+            "support": {
+                "irc": "irc://irc.freenode.net/phpunit",
+                "issues": "https://github.com/sebastianbergmann/phpunit/issues",
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/3.7"
+            },
             "time": "2014-10-17T09:04:17+00:00"
         },
         {
@@ -682,24 +739,30 @@
                 "mock",
                 "xunit"
             ],
+            "support": {
+                "irc": "irc://irc.freenode.net/phpunit",
+                "issues": "https://github.com/sebastianbergmann/phpunit-mock-objects/issues",
+                "source": "https://github.com/sebastianbergmann/phpunit-mock-objects/tree/1.2.3"
+            },
+            "abandoned": true,
             "time": "2013-01-13T10:24:48+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",
-            "version": "v1.12.0",
+            "version": "v1.22.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-ctype.git",
-                "reference": "550ebaac289296ce228a706d0867afc34687e3f4"
+                "reference": "c6c942b1ac76c82448322025e084cadc56048b4e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/550ebaac289296ce228a706d0867afc34687e3f4",
-                "reference": "550ebaac289296ce228a706d0867afc34687e3f4",
+                "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/c6c942b1ac76c82448322025e084cadc56048b4e",
+                "reference": "c6c942b1ac76c82448322025e084cadc56048b4e",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.3"
+                "php": ">=7.1"
             },
             "suggest": {
                 "ext-ctype": "For best performance"
@@ -707,7 +770,11 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.12-dev"
+                    "dev-main": "1.22-dev"
+                },
+                "thanks": {
+                    "name": "symfony/polyfill",
+                    "url": "https://github.com/symfony/polyfill"
                 }
             },
             "autoload": {
@@ -740,11 +807,28 @@
                 "polyfill",
                 "portable"
             ],
-            "time": "2019-08-06T08:03:45+00:00"
+            "support": {
+                "source": "https://github.com/symfony/polyfill-ctype/tree/v1.22.0"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2021-01-07T16:49:33+00:00"
         },
         {
             "name": "symfony/yaml",
-            "version": "v2.8.50",
+            "version": "v2.8.52",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
@@ -790,6 +874,9 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
+            "support": {
+                "source": "https://github.com/symfony/yaml/tree/v2.8.52"
+            },
             "time": "2018-11-11T11:18:13+00:00"
         }
     ],
@@ -799,7 +886,9 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=5.5.0"
+        "php": ">=5.6.0",
+        "ext-json": "*"
     },
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "2.0.0"
 }
