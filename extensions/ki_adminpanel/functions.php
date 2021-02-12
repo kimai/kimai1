@@ -117,12 +117,11 @@ function getCustomersData(Kimai_Database_Mysql $database, $kgaUser, $viewOtherGr
  */
 function getUsersData(Kimai_Database_Mysql $database, $kgaUser, $viewOtherGroupsAllowed)
 {
-    $result = [
+    return [
         'showDeletedUsers' => get_cookie('adminPanel_extension_show_deleted_users', 0),
         'curr_user' => $kgaUser['name'],
         'users' => getEditUserList($database, $kgaUser, $viewOtherGroupsAllowed)
     ];
-    return $result;
 }
 
 /**

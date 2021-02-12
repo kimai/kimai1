@@ -37,7 +37,6 @@
  */
 class Kimai_Auth_Ldapadvanced extends Kimai_Auth_Abstract
 {
-
     /**
      * Your LDAP-Server URI
      *
@@ -424,8 +423,8 @@ class Kimai_Auth_Ldapadvanced extends Kimai_Auth_Abstract
     public function getDefaultGroups()
     {
         $groups = [];
-        $roles  = [];
-        $map    = [];
+        $roles = [];
+        $map = [];
 
         $database = $this->getDatabase();
         foreach ($database->membership_roles() as $role) {

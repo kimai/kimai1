@@ -60,7 +60,12 @@ class Kimai_Extensions
         }
 
         while (false !== ($dir = readdir($handle))) {
-            if (is_file($dir) || $dir == '.' || $dir == '..' || substr($dir, 0) == '.' || substr($dir, 0, 1) == '#') {
+            if (is_file($dir)
+                || $dir == '.'
+                || $dir == '..'
+                || substr($dir, 0) == '.'
+                || substr($dir, 0, 1) == '#'
+            ) {
                 continue;
             }
 
@@ -212,10 +217,10 @@ class Kimai_Extensions
 
     public function timeoutList()
     {
-        $timeoutlist = '';
+        $timeoutList = '';
         foreach ($this->timeouts as $timeout) {
-            $timeoutlist .= "kill_timeout('" . $timeout . "');";
+            $timeoutList .= "kill_timeout('" . $timeout . "');";
         }
-        return $timeoutlist;
+        return $timeoutList;
     }
 }
