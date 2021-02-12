@@ -429,7 +429,7 @@ switch ($axAction) {
         }
 
         $filterCustomers = array_map(
-            function($customer) {
+            static function($customer) {
                 return $customer['customerID'];
             },
             $database->get_customers($kga['user']['groups'])
@@ -440,7 +440,7 @@ switch ($axAction) {
         }
 
         $filterProjects = array_map(
-            function($project) {
+            static function($project) {
                 return $project['projectID'];
             },
             $database->get_projects($kga['user']['groups'])
@@ -450,7 +450,7 @@ switch ($axAction) {
         }
 
         $filterActivities = array_map(
-            function($activity) {
+            static function($activity) {
                 return $activity['activityID'];
             },
             $database->get_activities($kga['user']['groups'])
@@ -459,7 +459,6 @@ switch ($axAction) {
         if (!empty($filters[3])) {
             $filterActivities = array_intersect($filterActivities, explode(':', $filters[3]));
         }
-
 
         // if no userfilter is set, set it to current user
         if (isset($kga['user']) && count($filterUsers) == 0) {

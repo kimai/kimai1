@@ -30,7 +30,7 @@ function getGroupsData(Kimai_Database_Mysql $database, $kgaUser, $viewOtherGroup
     if (!$viewOtherGroupsAllowed) {
         $allowedGroups = array_filter(
             $groups,
-            function ($group) use ($kgaUser) {
+            static function ($group) use ($kgaUser) {
                 return array_search($group['groupID'], $kgaUser['groups']) !== false;
             }
         );

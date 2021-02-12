@@ -70,20 +70,20 @@ if ($axAction === 'export_csv' ||
 
     if (isset($kga['customer'])) {
         $filterCustomers = $kga['customer']['customerID'];
-        $filterProjects = array_map(function ($project) {
+        $filterProjects = array_map(static function ($project) {
             return $project['projectID'];
         }, $database->get_projects_by_customer($kga['customer']['customerID']));
-        $filterActivities = array_map(function ($activity) {
+        $filterActivities = array_map(static function ($activity) {
             return $activity['activityID'];
         }, $database->get_activities_by_customer($kga['customer']['customerID']));
     } else {
-        $filterCustomers = array_map(function ($customer) {
+        $filterCustomers = array_map(static function ($customer) {
             return $customer['customerID'];
         }, $database->get_customers($kga['user']['groups']));
-        $filterProjects = array_map(function ($project) {
+        $filterProjects = array_map(static function ($project) {
             return $project['projectID'];
         }, $database->get_projects($kga['user']['groups']));
-        $filterActivities = array_map(function ($activity) {
+        $filterActivities = array_map(static function ($activity) {
             return $activity['activityID'];
         }, $database->get_activities($kga['user']['groups']));
 

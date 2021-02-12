@@ -37,7 +37,7 @@ if (empty($filters[0])) {
 }
 
 $filterCustomers = array_map(
-    function ($customer) {
+    static function ($customer) {
         return $customer['customerID'];
     },
     $database->get_customers($kga['user']['groups'])
@@ -48,7 +48,7 @@ if (!empty($filters[1])) {
 }
 
 $filterProjects = array_map(
-    function ($project) {
+    static function ($project) {
         return $project['projectID'];
     },
     $database->get_projects($kga['user']['groups'])
@@ -59,7 +59,7 @@ if (!empty($filters[2])) {
 }
 
 $filterActivities = array_map(
-    function ($activity) {
+    static function ($activity) {
         return $activity['activityID'];
     },
     $database->get_activities($kga['user']['groups'])

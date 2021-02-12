@@ -24,7 +24,6 @@
  */
 class Kimai_Auth_Ldap extends Kimai_Auth_Abstract
 {
-
     /**
      * Your LDAP-Server
      * @var string

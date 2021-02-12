@@ -93,7 +93,7 @@ switch ($axAction) {
         }
 
         $filterCustomers = array_map(
-            function ($customer) {
+            static function ($customer) {
                 return $customer['customerID'];
             },
             $database->get_customers($kga['user']['groups'])
@@ -104,7 +104,7 @@ switch ($axAction) {
         }
 
         $filterProjects = array_map(
-            function ($project) {
+            static function ($project) {
                 return $project['projectID'];
             },
             $database->get_projects($kga['user']['groups'])
