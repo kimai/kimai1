@@ -1,23 +1,23 @@
-[![Latest Stable Version](https://poser.pugx.org/kimai/kimai/v/stable)](https://packagist.org/packages/kimai/kimai)
-[![Total Downloads](https://poser.pugx.org/kimai/kimai/downloads)](https://packagist.org/packages/kimai/kimai)
-[![Build status](https://travis-ci.org/kimai/kimai.svg?branch=master)](https://travis-ci.org/kimai/kimai "Current build status")
- [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/kimai/kimai.svg)](http://isitmaintained.com/project/kimai/kimai "Average time to resolve an issue")
- [![Percentage of issues still open](http://isitmaintained.com/badge/open/kimai/kimai.svg)](http://isitmaintained.com/project/kimai/kimai "Percentage of issues still open")
 
-Kimai Time Tracking
-===================
+## 📢 Kimai v1 is not maintained any more
 
-![Kimai](https://raw.githubusercontent.com/kimai/documentation/master/assets/intro.jpg)
-
-## 📢 Please be aware that there is no further development of Kimai v1!
-
-Go ahead to https://github.com/kevinpapst/kimai2 and use the latest and greatest release rewritten from scratch which is also much more extendable than Kimai v1. If you are still running Kimai v1 and need support, we are available for paid support.
+Go ahead to https://github.com/kevinpapst/kimai2 and update to use the latest release, rewritten from scratch, which is also much more extendable than Kimai v1. If you are still running Kimai v1 and need support, we are [available for paid support](https://www.kimai.org/store/installation-support.html).
 
 ## Announcement Kimai v2 (June 2018)
 
 We are thrilled to announce that we are working on the **next major version of Kimai** which is ready for production from now on. There is a migration script from Kimai v1 to Kimai v2 available. Why not give it a try?
 
 Go ahead and [read our blog posting](https://www.kimai.org/blog/2018/kimai-v2-announcement/) to find out more.
+
+[![Latest Stable Version](https://poser.pugx.org/kimai/kimai/v/stable)](https://packagist.org/packages/kimai/kimai)
+[![Total Downloads](https://poser.pugx.org/kimai/kimai/downloads)](https://packagist.org/packages/kimai/kimai)
+[![Build status](https://travis-ci.org/kimai/kimai.svg?branch=master)](https://travis-ci.org/kimai/kimai "Current build status")
+ [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/kimai/kimai.svg)](http://isitmaintained.com/project/kimai/kimai "Average time to resolve an issue")
+ [![Percentage of issues still open](http://isitmaintained.com/badge/open/kimai/kimai.svg)](http://isitmaintained.com/project/kimai/kimai "Percentage of issues still open")
+
+# Kimai Time Tracking
+
+![Kimai](https://raw.githubusercontent.com/kimai/documentation/master/assets/intro.jpg)
 
 ## Intro
 
